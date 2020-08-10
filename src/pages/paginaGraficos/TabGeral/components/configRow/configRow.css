@@ -1,0 +1,56 @@
+.config-row {
+    display: flex;
+
+    margin-top: 16px;
+}
+
+.config-row .some-config {
+    border-right: 1px solid #c3c3c3;
+
+    padding-right: 15px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.config-row .some-config:first-child {
+    padding-left: 0;
+}
+
+.config-row .some-config:last-child {
+    border-right: none;
+}
+
+.config-row .some-config .config-title {
+    color: black;
+    font-family: Roboto;
+    font-weight: normal;
+    font-size: 18px;
+
+    margin-bottom: 5px;
+}
+
+.config-row .some-config .check-wrapper {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.config-row .some-config .check-container input.checkbox {
+    margin-right: 5px;
+}
+
+.config-row .some-config .check-container label.checkbox {
+    margin-right: 10px;
+}
+
+.config-row .some-config .input-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.config-row .some-config .input-wrapper label {
+    margin: 0;
+}
+
+.config-row .some-config .switches-ref-line {
+    margin-left: 17px;
+}

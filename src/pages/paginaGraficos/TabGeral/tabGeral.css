@@ -1,0 +1,42 @@
+#tab-geral {
+    padding: 15px;
+
+    height: 100%;
+}
+
+#tab-geral .tab-title {
+    color: black;
+
+    font-size: 20px;
+    font-family: Roboto;
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+#tab-geral .plot-button {
+    color: white;
+    background-color: #4ED840;
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    width: 100px;
+
+    transition: 0.5s;
+}
+
+#tab-geral .plot-button:hover {
+    background-color: #3a9e2f;
+}
+
+#tab-geral .opcoes-avancadas-button {
+    color: white;
+    background-color: #888686;
+
+    transition: 0.5s;
+}
+
+#tab-geral .opcoes-avancadas-button:hover {
+    background-color: #696868;
+}

@@ -1,0 +1,70 @@
+#page-grafico {
+    background-image: url('../..//assets/nk-mineirao.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+    min-height: 100vh;
+}
+
+#page-grafico .gradient {
+    min-height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    padding: 95px 25px 25px 25px;
+}
+
+#page-grafico .gradient .buttons-container {
+    width: 95vw;
+    display: flex;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #4ED840;
+}
+
+#page-grafico .gradient .buttons-container button {
+    width: 100%;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+
+    color: white;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+#page-grafico .gradient .buttons-container button:hover {
+    color: white;
+    background-color: #4ED840;
+    border-color: #4ED840;
+}
+
+#page-grafico .gradient .buttons-container .geral {
+    border-radius: 8px 0 0 0;
+}
+
+#page-grafico .gradient .buttons-container .config {
+    border-radius: 0 8px 0 0;
+}
+
+#page-grafico .gradient .buttons-container button#click {
+    background-color: #4ED840;
+}
+
+#page-grafico .gradient .page-grafico-content {
+    background-color: white;
+
+    position: relative;
+    
+    width: 95vw;
+    height: 100%;
+
+    border-radius: 0 0 8px 8px;
+}

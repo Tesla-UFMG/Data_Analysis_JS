@@ -1,0 +1,11 @@
+.chartArea {
+    width: 100%;
+    /* height: 200px; */
+    border: 1px solid #cacaca;
+    margin-bottom: 10px;
+}
+
+.chartArea path {
+	fill: none;
+	stroke: #2732f9;
+}
