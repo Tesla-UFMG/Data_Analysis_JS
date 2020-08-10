@@ -22,7 +22,7 @@ function Chart(props) {
 
         // const xScale = d3.scaleLinear().domain([0, 6]).range([0, 600]);
         // const yScale = d3.scaleLinear().domain([0, 80]).range([150, 0]);
-        const xScale = d3.scaleLinear().domain([0, data.length]).range([0, 880]);
+        const xScale = d3.scaleLinear().domain([0, data.length]).range([0, 1267]);
         const yScale = d3.scaleLinear().domain([-37, 37]).range([152, 0]);
 
         const lineGenerator = d3.line();
