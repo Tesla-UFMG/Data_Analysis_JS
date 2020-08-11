@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { tsv } from "d3";
 
 import { FileContext } from '../../../context/fileContext';
@@ -9,6 +10,8 @@ import Dropdown from './components/dropdown/dropdown';
 import './tabGeral.css';
 
 function TabGeral(props) {
+    const history = useHistory();
+
     const [data, setData] = useState([]);
     const [dataframe, setDataframe] = useState({})
     const [axisX, setAxisX] = useState([{ value:'timer', label:'Timer' }]);
@@ -20,10 +23,14 @@ function TabGeral(props) {
         const fileName = selectFile.map((file) => {
             return { file: require(`../../../files/${file.label}`) }
         })
-
-        tsv(fileName[0].file)
-            .then((d) => setData(d))
-            .catch((err) => console.log(err));
+        
+        if (fileName.length !== 0) {
+            tsv(fileName[0].file)
+                .then((d) => setData(d))
+                .catch((err) => console.log(err));
+        } else {
+            history.push('/');
+        }
     }, []);
 
     function plotingGraphs() {
