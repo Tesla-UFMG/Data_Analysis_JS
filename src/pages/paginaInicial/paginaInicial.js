@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-
-import api from '../../services/api';
-
 import Select from 'react-select';
+
+import { FileContext } from '../../context/fileContext';
+import api from '../../services/api';
 
 import './paginaInicial.css';
 
@@ -12,7 +12,7 @@ function PaginaInicial() {
 
     const [file, setFile] = useState('');
     const [fileArray, setFileArray] = useState([]);
-    const [selectFile, setSelectFile] = useState([]);
+    const [selectFile, setSelectFile] = useContext(FileContext);
 
     const onFileChange = async (event) => {
         setFile(event.target.files[0]); 
@@ -63,10 +63,12 @@ function PaginaInicial() {
     };
 
     function postSelectedFiles() {
-        if (selectFile.length !== 0) {
+        if (selectFile.length === 1) {
             history.push('/graficos');
+        } else if (selectFile.length > 1) {
+            alert("Por favor selecione somente um arquivo");
         } else {
-            alert("Por favor selecione um arquivo primeiro")
+            alert("Por favor selecione um arquivo primeiro");
         }
     }
 
@@ -89,7 +91,7 @@ function PaginaInicial() {
                 </div>
 
                 <div className="buttons-container">
-                    <button type="button" className="btn button" onClick={postSelectedFiles}>Selectionar Arquivo</button>
+                    <button type="button" className="btn button" onClick={postSelectedFiles}>Selecionar Arquivo</button>
                     <Select
                         isMulti
                         maxMenuHeight={150}

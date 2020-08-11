@@ -15,7 +15,7 @@ function PaginaGrafico() {
             return <div>Configuracoes</div>
         }
     }
-    
+
     return (
         <div id="page-grafico" className="container-fluid px-0">
             <div className="gradient">

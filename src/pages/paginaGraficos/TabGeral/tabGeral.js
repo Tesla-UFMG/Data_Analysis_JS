@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { tsv } from "d3";
 
+import { FileContext } from '../../../context/fileContext';
 import Chart from '../../../components/chart/chart';
-
 import ConfigRow from './components/configRow/configRow';
 import Dropdown from './components/dropdown/dropdown';
 
-import arquivo from '../../../files/ARQ04-Beacon.txt';
-
 import './tabGeral.css';
 
-function TabGeral() {
+function TabGeral(props) {
     const [data, setData] = useState([]);
     const [dataframe, setDataframe] = useState({})
     const [axisX, setAxisX] = useState([{ value:'timer', label:'Timer' }]);
     const [axisY, setAxisY] = useState([]);
     const [submit, setSubmit] = useState(false);
-
+    const [selectFile, setSelectFile] = useContext(FileContext);
 
     useEffect(() => {
-        tsv(arquivo)
+        const fileName = selectFile.map((file) => {
+            return { file: require(`../../../files/${file.label}`) }
+        })
+
+        tsv(fileName[0].file)
             .then((d) => setData(d))
             .catch((err) => console.log(err));
     }, []);
