@@ -39,14 +39,17 @@ function ConfigRow({ filterN, median, avarage }) {
       console.log("Sobrepor Voltas");
     }
   };
+
   const handleInputChange = () => {
     const value = document.getElementById("subsequencia").value;
     return filterN(value);
   };
+
   const handleAvarageChange = () => {
     const value = document.getElementById("check-media-movel").checked;
     return avarage(value);
   };
+  
   const handleMedianChange = () => {
     const value = document.getElementById("check-mediana").checked;
     return median(value);
@@ -65,7 +68,7 @@ function ConfigRow({ filterN, median, avarage }) {
               value="media"
               id="check-media-movel"
               onChange={handleAvarageChange}
-            ></input>
+            />
             <label className="checkbox" htmlFor="check-media-movel">
               Média móvel
             </label>
@@ -77,7 +80,7 @@ function ConfigRow({ filterN, median, avarage }) {
               value="mediana"
               id="check-mediana"
               onChange={handleMedianChange}
-            ></input>
+            />
             <label className="checkbox" htmlFor="check-mediana">
               Filtro mediana
             </label>
@@ -92,7 +95,7 @@ function ConfigRow({ filterN, median, avarage }) {
             name="subsequencia"
             min="1"
             onChange={handleInputChange}
-          ></input>
+          />
         </div>
       </div>
 
@@ -105,10 +108,8 @@ function ConfigRow({ filterN, median, avarage }) {
             type="checkbox"
             value="linha-horizontal"
             id="check-linha-horizontal"
-            onClick={() => {
-              setRefLine(!refLine);
-            }}
-          ></input>
+            onClick={() => setRefLine(!refLine)}
+          />
           <label className="checkbox" htmlFor="check-linha-horizontal">
             Linha horizontal
           </label>
@@ -124,11 +125,8 @@ function ConfigRow({ filterN, median, avarage }) {
               id="switch-definir-grafico"
               value="definir-grafico"
               onClick={handleRefLine}
-            ></input>
-            <label
-              className="custom-control-label"
-              htmlFor="switch-definir-grafico"
-            >
+            />
+            <label className="custom-control-label" htmlFor="switch-definir-grafico">
               Definir no gráfico
             </label>
           </div>
@@ -142,11 +140,8 @@ function ConfigRow({ filterN, median, avarage }) {
               id="switch-definir-valor"
               value="definir-valor"
               onClick={handleRefLine}
-            ></input>
-            <label
-              className="custom-control-label"
-              htmlFor="switch-definir-valor"
-            >
+            />
+            <label className="custom-control-label" htmlFor="switch-definir-valor">
               Definir valor
             </label>
           </div>
@@ -163,7 +158,7 @@ function ConfigRow({ filterN, median, avarage }) {
             id="switch-div-voltas"
             value="dividir"
             onClick={handleDividirVoltas}
-          ></input>
+          />
           <label className="custom-control-label" htmlFor="switch-div-voltas">
             Divisão de voltas
           </label>
@@ -176,11 +171,8 @@ function ConfigRow({ filterN, median, avarage }) {
             id="switch-destacar-voltas"
             value="destacar"
             onClick={handleDestacarVoltas}
-          ></input>
-          <label
-            className="custom-control-label"
-            htmlFor="switch-destacar-voltas"
-          >
+          />
+          <label className="custom-control-label" htmlFor="switch-destacar-voltas">
             Destacar voltas
           </label>
         </div>
@@ -196,11 +188,8 @@ function ConfigRow({ filterN, median, avarage }) {
             id="switch-sobrepor-voltas"
             value="sobrepor"
             onClick={handleSobrepor}
-          ></input>
-          <label
-            className="custom-control-label"
-            htmlFor="switch-sobrepor-voltas"
-          >
+          />
+          <label className="custom-control-label" htmlFor="switch-sobrepor-voltas">
             Sobrepor Voltas
           </label>
         </div>

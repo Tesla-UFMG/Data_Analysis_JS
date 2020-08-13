@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { tsv } from "d3";
 
 import ChartWrapper from "../../../components/chart/chartWrapper";
-
 import ConfigRow from "./components/configRow/configRow";
 import Dropdown from "./components/dropdown/dropdown";
 
 import arquivo from "../../../files/coxinha_enduro_3.txt";
+
 import "./tabGeral.css";
 
 function TabGeral() {
@@ -15,7 +15,7 @@ function TabGeral() {
   const [axisY, setAxisY] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [filterN, setFilterN] = useState(1);
-  const [avarageCheck, setavarageCheck] = useState(false);
+  const [avarageCheck, setAvarageCheck] = useState(false);
   const [medianCheck, setMedianCheck] = useState(false);
 
   useEffect(() => {
@@ -48,16 +48,7 @@ function TabGeral() {
     });
     // return <Chart data={dataframe[0]} />
   }
-  const handleFilterN = (number) => {
-    return setFilterN(number);
-  };
-  const handleMedian = (value) => {
-    return setMedianCheck(value);
-  };
-  const handleAvarage = (value) => {
-    return setavarageCheck(value);
-  };
-
+  
   return (
     <div id="tab-geral">
       <h1 className="tab-title">Opções de Plotagem</h1>
@@ -67,33 +58,25 @@ function TabGeral() {
           data={data}
           label="Eixo X"
           name="axis-X"
-          selectedAxis={(value) => {
-            setAxisX(value);
-          }}
+          selectedAxis={(value) => setAxisX(value)}
           defaultValue={{ value: "timer", label: "Timer" }}
         />
         <Dropdown
           data={data}
           label="Eixo Y"
           name="axis-y"
-          selectedAxis={(value) => {
-            setAxisY(value);
-          }}
+          selectedAxis={(value) => setAxisY(value)}
         />
       </form>
 
       <ConfigRow
-        filterN={handleFilterN}
-        avarage={handleAvarage}
-        median={handleMedian}
+        filterN={number => setFilterN(number)}
+        avarage={value => setAvarageCheck(value)}
+        median={value => setMedianCheck(value)}
       />
 
       <div className="row">
-        <button
-          type="button"
-          className="btn plot-button"
-          onClick={plotingGraphs}
-        >
+        <button type="button" className="btn plot-button" onClick={plotingGraphs}>
           Plotar
         </button>
       </div>

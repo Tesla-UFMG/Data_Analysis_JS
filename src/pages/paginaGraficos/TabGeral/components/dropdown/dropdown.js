@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 
 import "./dropdown.css";
-
+  
 function Dropdown(props) {
   const [columns, setColumns] = useState([]);
   const data = props.data;
@@ -29,6 +29,7 @@ function Dropdown(props) {
     });
     setColumns(options);
   }
+
   const renderDropDown = () => {
     if (props.name === "axis-X") {
       return (

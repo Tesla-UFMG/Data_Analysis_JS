@@ -11,6 +11,7 @@ const ChartWrapper = ({
 }) => {
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
+  
   useEffect(() => {
     if (!chart) {
       setChart(new D3Chart(chartArea.current));
