@@ -3,14 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { tsv } from "d3";
 
 import { FileContext } from '../../../context/fileContext';
-// import Chart from '../../../components/chart/chart';
 import ChartWrapper from "../../../components/chart/chartWrapper";
 import ConfigRow from './components/configRow/configRow';
 import Dropdown from './components/dropdown/dropdown';
 
 import './tabGeral.css';
 
-function TabGeral(props) {
+function TabGeral() {
   const history = useHistory();
 
   const [data, setData] = useState([]);

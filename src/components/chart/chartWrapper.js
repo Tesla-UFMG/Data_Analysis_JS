@@ -23,7 +23,6 @@ const ChartWrapper = ({
           return [+d[xAxis], +d[yAxis]];
         });
         const baseNumber = +filterN;
-        console.log([medianCheck, avarageCheck]);
         if (avarageCheck) {
           let mean = 0;
           for (let i = 0; i < processData.length - baseNumber; i++) {
