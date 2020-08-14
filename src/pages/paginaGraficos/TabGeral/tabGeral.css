@@ -42,3 +42,9 @@
 #tab-geral .opcoes-avancadas-button:hover {
     background-color: #696868;
 }
+
+#tab-geral .chart {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}

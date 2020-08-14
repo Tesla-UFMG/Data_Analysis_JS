@@ -56,7 +56,7 @@ export default class D3Chart {
     vis.lineClip = vis.svg.append("g").attr("clip-path", "url(#clip)");
   }
 
-  update(data, yAxis, xAxis, yData) {
+  update(data, yAxis, xAxis) {
     const vis = this;
 
     if (data) {

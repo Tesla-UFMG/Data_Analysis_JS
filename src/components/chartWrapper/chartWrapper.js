@@ -1,15 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
-import D3Chart from "./chart";
+import D3Chart from "../chart/chart";
 
-const ChartWrapper = ({
-  data,
-  yAxis,
-  xAxis,
-  filterN,
-  medianCheck,
-  avarageCheck,
-}) => {
+const ChartWrapper = ({ data, yAxis, xAxis, filterN, medianCheck, avarageCheck }) => {
   const chartArea = useRef(null);
+
   const [chart, setChart] = useState(null);
   
   useEffect(() => {
@@ -17,14 +11,17 @@ const ChartWrapper = ({
       setChart(new D3Chart(chartArea.current));
     } else if (data) {
       if (filterN) {
+        const baseNumber = +filterN;
         let yData = [];
+
         let processData = data.map((d) => {
           yData.push(d[yAxis]);
           return [+d[xAxis], +d[yAxis]];
         });
-        const baseNumber = +filterN;
+
         if (avarageCheck) {
           let mean = 0;
+
           for (let i = 0; i < processData.length - baseNumber; i++) {
             mean = 0;
             for (let j = i; j < baseNumber + i; j++) {
@@ -33,15 +30,13 @@ const ChartWrapper = ({
             mean = mean / baseNumber;
             processData[i][1] = mean;
           }
-          for (
-            let i = processData.length - baseNumber;
-            i < processData.length;
-            i++
-          ) {
+
+          for (let i = processData.length - baseNumber; i < processData.length; i++) {
             processData[i][1] = mean;
           }
         } else if (medianCheck) {
           let mean = 0;
+
           for (let i = 0; i < processData.length - baseNumber; i++) {
             mean = 0;
             for (let j = i; j < baseNumber + i; j++) {
@@ -55,15 +50,13 @@ const ChartWrapper = ({
             mean = mean / baseNumber;
             processData[i][1] = mean;
           }
-          for (
-            let i = processData.length - baseNumber;
-            i < processData.length;
-            i++
-          ) {
+
+          for (let i = processData.length - baseNumber; i < processData.length; i++) {
             processData[i][1] = mean;
           }
         }
-        chart.update(processData, yAxis, xAxis, yData);
+
+        chart.update(processData, yAxis, xAxis);
       } else {
         let processData = null;
         chart.update(processData, yAxis, xAxis);

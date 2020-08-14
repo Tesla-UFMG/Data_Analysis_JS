@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { tsv } from "d3";
 
 import { FileContext } from '../../../context/fileContext';
-import ChartWrapper from "../../../components/chart/chartWrapper";
+import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
 import ConfigRow from './components/configRow/configRow';
 import Dropdown from './components/dropdown/dropdown';
 
@@ -12,12 +12,13 @@ import './tabGeral.css';
 function TabGeral() {
   const history = useHistory();
 
+  const [selectFile, setSelectFile] = useContext(FileContext);
+
   const [data, setData] = useState([]);
-  const [dataframe, setDataframe] = useState({})
+  // const [dataframe, setDataframe] = useState({})
   const [axisX, setAxisX] = useState([{ value:'timer', label:'Timer' }]);
   const [axisY, setAxisY] = useState([]);
   const [submit, setSubmit] = useState(false);
-  const [selectFile, setSelectFile] = useContext(FileContext);
   const [filterN, setFilterN] = useState(1);
   const [avarageCheck, setAvarageCheck] = useState(false);
   const [medianCheck, setMedianCheck] = useState(false);
@@ -37,21 +38,21 @@ function TabGeral() {
   }, []);
 
   function plotingGraphs() {
-    const aux = [];
-    const columns = [];
+    // const aux = [];
+    // const columns = [];
 
-    if (axisY.length === 0) {
-      return alert('Por favor selecione algum dado antes.')
-    }
+    // if (axisY.length === 0) {
+    //   return alert('Por favor selecione algum dado antes.')
+    // }
 
-    for (let i = 0; i < axisY.length; i++) {
-      columns.push(axisY[i].column);
-      const df = data.map(d => {    
-        return { column: columns[i], value: parseFloat(d[columns[i]]) }
-      })
-      aux.push(df)
-    }
-    setDataframe(aux)
+    // for (let i = 0; i < axisY.length; i++) {
+    //   columns.push(axisY[i].column);
+    //   const df = data.map(d => {    
+    //     return { column: columns[i], value: parseFloat(d[columns[i]]) }
+    //   })
+    //   aux.push(df)
+    // }
+    // setDataframe(aux)
     setSubmit(true)
   }
   
