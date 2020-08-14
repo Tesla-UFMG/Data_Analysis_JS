@@ -7,7 +7,6 @@ const height = { Graph: 200 };
 export default class D3Chart {
   constructor(element) {
     const vis = this;
-    console.log(element);
 
     //Criando o svg
     vis.svg = d3

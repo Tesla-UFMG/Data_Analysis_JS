@@ -61,7 +61,7 @@ function TabGeral() {
         <ChartWrapper
           key={axis.column}
           data={data}
-          xAxis={axisX.value}
+          xAxis={axisX[0].value}
           yAxis={axis.column}
           filterN={filterN}
           avarageCheck={avarageCheck}
