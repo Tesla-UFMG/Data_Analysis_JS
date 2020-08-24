@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 30, left: 90, right: 10, bottom: 70 };
+const MARGIN = { top: 30, left: 50, right: 10, bottom: 70 };
 const width = { Mini: 1200 };
 const height = { Mini: 50 };
 
@@ -15,15 +15,20 @@ export default class MiniChart {
       .attr("height", height.Mini + MARGIN.top + MARGIN.bottom)
       .append("g")
       .attr("transform", `translate(${MARGIN.left}, ${MARGIN.top})`);
+
     vis.miniLapLines = vis.miniSvg.append("g").attr("class", "laplines");
+
     vis.miniX = d3.scaleLinear().range([0, width.Mini]);
     vis.miniY = d3.scaleLinear().range([0, height.Mini]);
+    
     vis.minixLabelGroup = vis.miniSvg
       .append("g")
       .attr("class", "minixLabel")
       .attr("transform", `translate(0, ${height.Mini})`)
       .attr("color", "black");
+    
     vis.miniFocus = vis.miniSvg.append("g").style("display", "none");
+    
     vis.miniFocus
       .append("path")
       .attr("class", "y")
@@ -37,14 +42,18 @@ export default class MiniChart {
           [0, 0],
         ])
       );
+    
     vis.brush = vis.miniSvg.append("g").attr("class", "brush");
   }
+
   update(xDomain, lapLocation) {
     const vis = this;
 
     vis.miniX.domain(xDomain);
     vis.minixLabel = d3.axisBottom(vis.miniX);
+
     console.log(vis.miniX.range);
+    
     lapLocation.map((location, i) => {
       vis.miniLapLines
         .append("path")
@@ -61,10 +70,12 @@ export default class MiniChart {
         )
         .attr("transform", `translate(${vis.miniX(location)},0)`);
     });
+    
     vis.minixLabelGroup
       .transition()
       .duration(1000)
       .call(vis.minixLabel.ticks(lapLocation.lenght));
+    
     const brush = d3
       .brushX()
       .extent([
@@ -72,6 +83,7 @@ export default class MiniChart {
         [width.Mini, height.Mini],
       ])
       .on("end", brushed);
+    
     vis.brush.call(brush);
 
     function brushed() {
@@ -83,3 +95,6 @@ export default class MiniChart {
     }
   }
 }
+
+
+
