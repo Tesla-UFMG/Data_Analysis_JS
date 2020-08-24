@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { tsv } from "d3";
 
-import { FileContext } from '../../../context/fileContext';
+import { FileContext } from "../../../context/fileContext";
 import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
-import ConfigRow from './components/configRow/configRow';
-import Dropdown from './components/dropdown/dropdown';
+import ConfigRow from "./components/configRow/configRow";
+import Dropdown from "./components/dropdown/dropdown";
+import MiniWrapper from "../../../components/chartWrapper/miniChartWrapper";
 
-import './tabGeral.css';
+import "./tabGeral.css";
 
 function TabGeral() {
   const history = useHistory();
@@ -16,7 +17,7 @@ function TabGeral() {
 
   const [data, setData] = useState([]);
   // const [dataframe, setDataframe] = useState({})
-  const [axisX, setAxisX] = useState([{ value:'timer', label:'Timer' }]);
+  const [axisX, setAxisX] = useState([{ value: "timer", label: "Timer" }]);
   const [axisY, setAxisY] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [filterN, setFilterN] = useState(1);
@@ -25,37 +26,22 @@ function TabGeral() {
 
   useEffect(() => {
     const fileName = selectFile.map((file) => {
-      return { file: require(`../../../files/${file.label}`) }
-    })
-      
+      return { file: require(`../../../files/${file.label}`) };
+    });
+
     if (fileName.length !== 0) {
       tsv(fileName[0].file)
         .then((d) => setData(d))
         .catch((err) => console.log(err));
     } else {
-      history.push('/');
+      history.push("/");
     }
   }, []);
 
   function plotingGraphs() {
-    // const aux = [];
-    // const columns = [];
-
-    // if (axisY.length === 0) {
-    //   return alert('Por favor selecione algum dado antes.')
-    // }
-
-    // for (let i = 0; i < axisY.length; i++) {
-    //   columns.push(axisY[i].column);
-    //   const df = data.map(d => {    
-    //     return { column: columns[i], value: parseFloat(d[columns[i]]) }
-    //   })
-    //   aux.push(df)
-    // }
-    // setDataframe(aux)
-    setSubmit(true)
+    setSubmit(true);
   }
-  
+
   function renderChart() {
     return axisY.map((axis) => {
       return (
@@ -72,7 +58,9 @@ function TabGeral() {
     });
     // return <Chart data={dataframe[0]} />
   }
-  
+  function renderMiniWrapper() {
+    return <MiniWrapper data={data} xAxis={axisX[0].value} />;
+  }
   return (
     <div id="tab-geral">
       <h1 className="tab-title">Opções de Plotagem</h1>
@@ -94,17 +82,21 @@ function TabGeral() {
       </form>
 
       <ConfigRow
-        filterN={number => setFilterN(number)}
-        avarage={value => setAvarageCheck(value)}
-        median={value => setMedianCheck(value)}
+        filterN={(number) => setFilterN(number)}
+        avarage={(value) => setAvarageCheck(value)}
+        median={(value) => setMedianCheck(value)}
       />
 
       <div className="row">
-        <button type="button" className="btn plot-button" onClick={plotingGraphs}>
+        <button
+          type="button"
+          className="btn plot-button"
+          onClick={plotingGraphs}
+        >
           Plotar
         </button>
       </div>
-
+      <div className="miniChart">{renderMiniWrapper()}</div>
       <div className="chart">{submit && renderChart()}</div>
 
       <div className="row">
