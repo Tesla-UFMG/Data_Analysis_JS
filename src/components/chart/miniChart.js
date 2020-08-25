@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 
 const MARGIN = { top: 30, left: 60, right: 10, bottom: 70 };
+
 const width = { Mini: 1200 };
 const height = { Mini: 50 };
 
@@ -15,14 +16,18 @@ export default class MiniChart {
       .attr("height", height.Mini + MARGIN.top + MARGIN.bottom)
       .append("g")
       .attr("transform", `translate(${MARGIN.left}, ${MARGIN.top})`);
+
     vis.miniLapLines = vis.miniSvg.append("g").attr("class", "laplines");
+
     vis.miniX = d3.scaleLinear().range([0, width.Mini]);
     vis.miniY = d3.scaleLinear().range([0, height.Mini]);
+
     vis.minixLabelGroup = vis.miniSvg
       .append("g")
       .attr("class", "minixLabel")
       .attr("transform", `translate(0, ${height.Mini})`)
       .attr("color", "black");
+
     vis.brush = vis.miniSvg.append("g").attr("class", "brush");
   }
   update(xDomain, lapLocation, handleNewX, handleS) {
@@ -59,6 +64,7 @@ export default class MiniChart {
       .transition()
       .duration(1000)
       .call(vis.minixLabel.ticks(lapLocation.lenght));
+
     const brush = d3
       .brushX()
       .extent([

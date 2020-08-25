@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 
 const MARGIN = { top: 0, left: 60, right: 10, bottom: 0 };
+
 const width = { Graph: 1200 };
 const height = { Graph: 200 };
 

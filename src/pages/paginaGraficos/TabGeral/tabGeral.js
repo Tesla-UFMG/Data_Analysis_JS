@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { tsv } from "d3";
 
 import { FileContext } from "../../../context/fileContext";
+
 import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
 import ConfigRow from "./components/configRow/configRow";
 import Dropdown from "./components/dropdown/dropdown";
@@ -15,8 +16,10 @@ function TabGeral() {
   const [selectFile, setSelectFile] = useContext(FileContext);
 
   const [data, setData] = useState([]);
+
   // const [dataframe, setDataframe] = useState({})
   const [axisX, setAxisX] = useState({ value: "timer", label: "Timer" });
+
   const [axisY, setAxisY] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [filterN, setFilterN] = useState(1);
@@ -56,8 +59,8 @@ function TabGeral() {
         />
       );
     });
-    // return <Chart data={dataframe[0]} />
   }
+
   return (
     <div id="tab-geral">
       <h1 className="tab-title">Opções de Plotagem</h1>

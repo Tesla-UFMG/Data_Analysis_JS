@@ -1,17 +1,22 @@
 import React, { useRef, useState, useEffect } from "react";
-import MiniChart from "../chart/miniChart";
 import { extent } from "d3";
+
+import MiniChart from "../chart/miniChart";
+
 function MiniWrapper(props) {
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
+
   useEffect(() => {
     if (!chart) {
       setChart(new MiniChart(chartArea.current));
     } else if (props.data) {
-      const xDomain = extent(props.data.map((d) => +d[props.xAxis]));
       const lapLocation = [];
       let lapFlag = 0;
-      props.data.map((d, i) => {
+
+      const xDomain = extent(props.data.map((d) => +d[props.xAxis]));
+
+      props.data.map((d) => {
         if (d.beacon === "1" && lapFlag === 0) {
           lapLocation.push(d[props.xAxis]);
           return (lapFlag = 1);
@@ -20,6 +25,7 @@ function MiniWrapper(props) {
         }
         return lapFlag;
       });
+      
       chart.update(xDomain, lapLocation);
     }
   }, [chart, props.data, props.xAxis]);
