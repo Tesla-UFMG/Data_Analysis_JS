@@ -6,7 +6,6 @@ import { FileContext } from "../../../context/fileContext";
 import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
 import ConfigRow from "./components/configRow/configRow";
 import Dropdown from "./components/dropdown/dropdown";
-import MiniWrapper from "../../../components/chartWrapper/miniChartWrapper";
 
 import "./tabGeral.css";
 
@@ -17,7 +16,7 @@ function TabGeral() {
 
   const [data, setData] = useState([]);
   // const [dataframe, setDataframe] = useState({})
-  const [axisX, setAxisX] = useState([{ value: "timer", label: "Timer" }]);
+  const [axisX, setAxisX] = useState({ value: "timer", label: "Timer" });
   const [axisY, setAxisY] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [filterN, setFilterN] = useState(1);
@@ -43,23 +42,21 @@ function TabGeral() {
   }
 
   function renderChart() {
-    return axisY.map((axis) => {
+    return axisY.map((axis, i) => {
       return (
         <ChartWrapper
           key={axis.column}
           data={data}
-          xAxis={axisX[0].value}
+          xAxis={axisX.value}
           yAxis={axis.column}
           filterN={filterN}
           avarageCheck={avarageCheck}
           medianCheck={medianCheck}
+          index={i}
         />
       );
     });
     // return <Chart data={dataframe[0]} />
-  }
-  function renderMiniWrapper() {
-    return <MiniWrapper data={data} xAxis={axisX[0].value} />;
   }
   return (
     <div id="tab-geral">
@@ -96,7 +93,6 @@ function TabGeral() {
           Plotar
         </button>
       </div>
-      <div className="miniChart">{renderMiniWrapper()}</div>
       <div className="chart">{submit && renderChart()}</div>
 
       <div className="row">

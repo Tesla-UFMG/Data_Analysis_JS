@@ -24,7 +24,7 @@ function MiniWrapper(props) {
     }
   }, [chart, props.data, props.xAxis]);
 
-  return <div className="mini-chart-area" ref={chartArea}></div>;
+  return <div className="chart-area" ref={chartArea}></div>;
 }
 
 export default MiniWrapper;

@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 30, left: 90, right: 10, bottom: 70 };
+const MARGIN = { top: 30, left: 60, right: 10, bottom: 70 };
 const width = { Mini: 1200 };
 const height = { Mini: 50 };
 
@@ -23,29 +23,15 @@ export default class MiniChart {
       .attr("class", "minixLabel")
       .attr("transform", `translate(0, ${height.Mini})`)
       .attr("color", "black");
-    vis.miniFocus = vis.miniSvg.append("g").style("display", "none");
-    vis.miniFocus
-      .append("path")
-      .attr("class", "y")
-      .attr("fill", "none")
-      .attr("stroke", "white")
-      .attr("stroke-width", "1px")
-      .attr(
-        "d",
-        d3.line()([
-          [0, height.Mini],
-          [0, 0],
-        ])
-      );
     vis.brush = vis.miniSvg.append("g").attr("class", "brush");
   }
-  update(xDomain, lapLocation) {
+  update(xDomain, lapLocation, handleNewX, handleS) {
     const vis = this;
 
     vis.miniX.domain(xDomain);
     vis.minixLabel = d3.axisBottom(vis.miniX);
-    console.log(vis.miniX.range);
-    lapLocation.map((location, i) => {
+
+    lapLocation.map((location, i) =>
       vis.miniLapLines
         .append("path")
         .attr("fill", "none")
@@ -59,8 +45,16 @@ export default class MiniChart {
             [0, 0],
           ])
         )
-        .attr("transform", `translate(${vis.miniX(location)},0)`);
-    });
+        .attr("transform", `translate(${vis.miniX(location)},0)`)
+    );
+    vis.miniLapLines.exit().transition().duration(1500).remove();
+    lapLocation.map((location, i) =>
+      vis.miniLapLines
+        .selectAll(`.line${i}`)
+        .transition()
+        .duration(1000)
+        .attr("transform", `translate(${vis.miniX(location)},0)`)
+    );
     vis.minixLabelGroup
       .transition()
       .duration(1000)
@@ -72,13 +66,15 @@ export default class MiniChart {
         [width.Mini, height.Mini],
       ])
       .on("end", brushed);
-    vis.brush.call(brush);
+    vis.brush.call(brush).call(brush.move, vis.miniX.range());
 
     function brushed() {
       if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return;
       // ignore brush-by-zoom
       var s = d3.event.selection || vis.miniX.range();
       const newXdomain = s.map(vis.miniX.invert, vis.miniX);
+      handleNewX(newXdomain);
+      handleS(s);
       console.log([s, newXdomain]);
     }
   }

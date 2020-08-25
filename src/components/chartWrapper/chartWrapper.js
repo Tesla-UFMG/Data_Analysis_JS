@@ -1,11 +1,49 @@
 import React, { useRef, useState, useEffect } from "react";
 import D3Chart from "../chart/chart";
+import MiniChart from "../chart/miniChart";
+import { extent } from "d3";
 
-const ChartWrapper = ({ data, yAxis, xAxis, filterN, medianCheck, avarageCheck }) => {
+const ChartWrapper = ({
+  data,
+  yAxis,
+  xAxis,
+  filterN,
+  medianCheck,
+  avarageCheck,
+  index,
+}) => {
   const chartArea = useRef(null);
-
   const [chart, setChart] = useState(null);
-  
+  const [minichart, setminiChart] = useState(null);
+  const [s, setS] = useState(null);
+  const [newXdomain, setNewXdomain] = useState(null);
+
+  const handleS = (sRecived) => {
+    return setS(sRecived);
+  };
+  const handleNewX = (xRecived) => {
+    return setNewXdomain(xRecived);
+  };
+
+  useEffect(() => {
+    if (!minichart && index === 0) {
+      setminiChart(new MiniChart(chartArea.current));
+    } else if (index === 0) {
+      const xDomain = extent(data.map((d) => +d[xAxis]));
+      const lapLocation = [];
+      let lapFlag = 0;
+      data.map((d, i) => {
+        if (d.beacon === "1" && lapFlag === 0) {
+          lapLocation.push(d[xAxis]);
+          return (lapFlag = 1);
+        } else if (d.beacon === "0" && lapFlag === 1) {
+          return (lapFlag = 0);
+        }
+        return lapFlag;
+      });
+      minichart.update(xDomain, lapLocation, handleNewX, handleS);
+    }
+  }, [minichart, data, xAxis, index]);
   useEffect(() => {
     if (!chart) {
       setChart(new D3Chart(chartArea.current));
@@ -13,9 +51,11 @@ const ChartWrapper = ({ data, yAxis, xAxis, filterN, medianCheck, avarageCheck }
       if (filterN) {
         const baseNumber = +filterN;
         let yData = [];
+        let xData = [];
 
         let processData = data.map((d) => {
-          yData.push(d[yAxis]);
+          yData.push(+d[yAxis]);
+          xData.push(+d[xAxis]);
           return [+d[xAxis], +d[yAxis]];
         });
 
@@ -31,7 +71,11 @@ const ChartWrapper = ({ data, yAxis, xAxis, filterN, medianCheck, avarageCheck }
             processData[i][1] = mean;
           }
 
-          for (let i = processData.length - baseNumber; i < processData.length; i++) {
+          for (
+            let i = processData.length - baseNumber;
+            i < processData.length;
+            i++
+          ) {
             processData[i][1] = mean;
           }
         } else if (medianCheck) {
@@ -51,18 +95,32 @@ const ChartWrapper = ({ data, yAxis, xAxis, filterN, medianCheck, avarageCheck }
             processData[i][1] = mean;
           }
 
-          for (let i = processData.length - baseNumber; i < processData.length; i++) {
+          for (
+            let i = processData.length - baseNumber;
+            i < processData.length;
+            i++
+          ) {
             processData[i][1] = mean;
           }
         }
 
-        chart.update(processData, yAxis, xAxis);
+        chart.update(processData, yAxis, s, newXdomain);
       } else {
         let processData = null;
-        chart.update(processData, yAxis, xAxis);
+        chart.update(processData, yAxis, s, newXdomain);
       }
     }
-  }, [chart, data, yAxis, xAxis, filterN, medianCheck, avarageCheck]);
+  }, [
+    chart,
+    data,
+    yAxis,
+    xAxis,
+    filterN,
+    medianCheck,
+    avarageCheck,
+    s,
+    newXdomain,
+  ]);
 
   return <div className="chart-area" ref={chartArea}></div>;
 };
