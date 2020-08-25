@@ -1,17 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
-import D3Chart from "../chart/chart";
-import MiniChart from "../chart/miniChart";
 import { extent } from "d3";
 
-const ChartWrapper = ({
-  data,
-  yAxis,
-  xAxis,
-  filterN,
-  medianCheck,
-  avarageCheck,
-  index,
-}) => {
+import D3Chart from "../chart/chart";
+import MiniChart from "../chart/miniChart";
+
+const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, index}) => {
+
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
   const [minichart, setminiChart] = useState(null);
@@ -21,9 +15,30 @@ const ChartWrapper = ({
   const handleS = (sRecived) => {
     return setS(sRecived);
   };
+
   const handleNewX = (xRecived) => {
     return setNewXdomain(xRecived);
   };
+
+  const dataToHandle = ['Intensidade_Frenagem', 'timer', 'Speed_LR', 'Speed_RR', 'Pedal', 'accelX', 'accelY', 'accelZ', 'Volante']
+
+  function handleData() {
+    if (dataToHandle.includes(yAxis)) {
+      data.map(d => {
+        if (yAxis === 'timer' || yAxis === 'accelX' || yAxis === 'accelY' || yAxis === 'accelZ') {
+          d.[yAxis] = d.[yAxis] / 1000; 
+        }
+
+        if (yAxis === 'Intensidade_Frenagem' || yAxis === 'Speed_LR' || yAxis === 'Speed_RR' || yAxis === 'Pedal') {
+          d.[yAxis] = d.[yAxis] / 10; 
+        }
+
+        if (yAxis === 'Volante') {
+          d.[yAxis] = (d.[yAxis] - 1030) / 10;
+        }
+      })
+    }
+  }
 
   useEffect(() => {
     if (!minichart && index === 0) {
@@ -32,18 +47,22 @@ const ChartWrapper = ({
       const xDomain = extent(data.map((d) => +d[xAxis]));
       const lapLocation = [];
       let lapFlag = 0;
-      data.map((d, i) => {
+      
+      data.map((d) => {
         if (d.beacon === "1" && lapFlag === 0) {
           lapLocation.push(d[xAxis]);
           return (lapFlag = 1);
         } else if (d.beacon === "0" && lapFlag === 1) {
           return (lapFlag = 0);
+        
         }
         return lapFlag;
       });
+      
       minichart.update(xDomain, lapLocation, handleNewX, handleS);
     }
   }, [minichart, data, xAxis, index]);
+
   useEffect(() => {
     if (!chart) {
       setChart(new D3Chart(chartArea.current));
@@ -52,6 +71,8 @@ const ChartWrapper = ({
         const baseNumber = +filterN;
         let yData = [];
         let xData = [];
+
+        handleData();
 
         let processData = data.map((d) => {
           yData.push(+d[yAxis]);
@@ -110,17 +131,7 @@ const ChartWrapper = ({
         chart.update(processData, yAxis, s, newXdomain);
       }
     }
-  }, [
-    chart,
-    data,
-    yAxis,
-    xAxis,
-    filterN,
-    medianCheck,
-    avarageCheck,
-    s,
-    newXdomain,
-  ]);
+  }, [chart, data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s, newXdomain]);
 
   return <div className="chart-area" ref={chartArea}></div>;
 };

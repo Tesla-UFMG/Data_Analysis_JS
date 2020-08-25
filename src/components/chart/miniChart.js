@@ -1,8 +1,13 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 30, left: 60, right: 10, bottom: 70 };
+const MARGIN = { top: 30, left: 50, right: 10, bottom: 70 };
 
-const width = { Mini: 1200 };
+var windowWidth = window.innerWidth - 100;
+var vw = windowWidth / 100;
+
+var graphWidth = windowWidth - (5*vw);
+
+const width = { Mini: graphWidth };
 const height = { Mini: 50 };
 
 export default class MiniChart {
@@ -30,6 +35,7 @@ export default class MiniChart {
 
     vis.brush = vis.miniSvg.append("g").attr("class", "brush");
   }
+  
   update(xDomain, lapLocation, handleNewX, handleS) {
     const vis = this;
 
@@ -81,7 +87,7 @@ export default class MiniChart {
       const newXdomain = s.map(vis.miniX.invert, vis.miniX);
       handleNewX(newXdomain);
       handleS(s);
-      console.log([s, newXdomain]);
+      // console.log([s, newXdomain]);
     }
   }
 }
