@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 30, left: 60, right: 10, bottom: 70 };
+const MARGIN = { top: 30, left: 40, right: 10, bottom: 70 };
 
 const width = { Mini: 1200 };
 const height = { Mini: 50 };
@@ -81,7 +81,6 @@ export default class MiniChart {
       const newXdomain = s.map(vis.miniX.invert, vis.miniX);
       handleNewX(newXdomain);
       handleS(s);
-      console.log([s, newXdomain]);
     }
   }
 }

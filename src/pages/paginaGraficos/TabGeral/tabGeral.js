@@ -7,6 +7,7 @@ import { FileContext } from "../../../context/fileContext";
 import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
 import ConfigRow from "./components/configRow/configRow";
 import Dropdown from "./components/dropdown/dropdown";
+import MiniWrapper from "../../../components/chartWrapper/miniChartWrapper";
 
 import "./tabGeral.css";
 
@@ -25,6 +26,8 @@ function TabGeral() {
   const [filterN, setFilterN] = useState(1);
   const [avarageCheck, setAvarageCheck] = useState(false);
   const [medianCheck, setMedianCheck] = useState(false);
+  const [s, setS] = useState(0);
+  const [newXdomain, setNewXdomain] = useState(0);
 
   useEffect(() => {
     const fileName = selectFile.map((file) => {
@@ -43,7 +46,22 @@ function TabGeral() {
   function plotingGraphs() {
     setSubmit(true);
   }
-
+  const handleS = (sRecived) => {
+    return setS(sRecived);
+  };
+  const handleNewX = (xRecived) => {
+    return setNewXdomain(xRecived);
+  };
+  function renderMiniChart() {
+    return (
+      <MiniWrapper
+        data={data}
+        xAxis={axisX.value}
+        handleS={handleS}
+        handleNewX={handleNewX}
+      ></MiniWrapper>
+    );
+  }
   function renderChart() {
     return axisY.map((axis, i) => {
       return (
@@ -55,7 +73,8 @@ function TabGeral() {
           filterN={filterN}
           avarageCheck={avarageCheck}
           medianCheck={medianCheck}
-          index={i}
+          s={s}
+          newXdomain={newXdomain}
         />
       );
     });
@@ -96,6 +115,7 @@ function TabGeral() {
           Plotar
         </button>
       </div>
+      <div>{submit && renderMiniChart()}</div>
       <div className="chart">{submit && renderChart()}</div>
 
       <div className="row">

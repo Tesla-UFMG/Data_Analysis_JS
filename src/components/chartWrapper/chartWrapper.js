@@ -1,7 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import D3Chart from "../chart/chart";
-import MiniChart from "../chart/miniChart";
-import { extent } from "d3";
 
 const ChartWrapper = ({
   data,
@@ -10,40 +8,12 @@ const ChartWrapper = ({
   filterN,
   medianCheck,
   avarageCheck,
-  index,
+  s,
+  newXdomain,
 }) => {
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
-  const [minichart, setminiChart] = useState(null);
-  const [s, setS] = useState(null);
-  const [newXdomain, setNewXdomain] = useState(null);
 
-  const handleS = (sRecived) => {
-    return setS(sRecived);
-  };
-  const handleNewX = (xRecived) => {
-    return setNewXdomain(xRecived);
-  };
-
-  useEffect(() => {
-    if (!minichart && index === 0) {
-      setminiChart(new MiniChart(chartArea.current));
-    } else if (index === 0) {
-      const xDomain = extent(data.map((d) => +d[xAxis]));
-      const lapLocation = [];
-      let lapFlag = 0;
-      data.map((d, i) => {
-        if (d.beacon === "1" && lapFlag === 0) {
-          lapLocation.push(d[xAxis]);
-          return (lapFlag = 1);
-        } else if (d.beacon === "0" && lapFlag === 1) {
-          return (lapFlag = 0);
-        }
-        return lapFlag;
-      });
-      minichart.update(xDomain, lapLocation, handleNewX, handleS);
-    }
-  }, [minichart, data, xAxis, index]);
   useEffect(() => {
     if (!chart) {
       setChart(new D3Chart(chartArea.current));

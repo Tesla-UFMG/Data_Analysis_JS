@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 0, left: 60, right: 10, bottom: 0 };
+const MARGIN = { top: 0, left: 40, right: 10, bottom: 0 };
 
 const width = { Graph: 1200 };
 const height = { Graph: 200 };
@@ -87,7 +87,6 @@ export default class D3Chart {
       vis.data.map((d) => (xData.push(d[0]), yData.push(d[1])));
       const xDomain = d3.extent(vis.data.map((d) => d[0]));
       const yDomain = d3.extent(vis.data.map((d) => d[1]));
-      console.log(yData);
       vis.X.domain(xDomain);
       vis.Y.domain([yDomain[1], yDomain[0]]);
 
@@ -108,7 +107,6 @@ export default class D3Chart {
           [width.Graph, height.Graph],
         ]);
       if (newXdomain && s) {
-        console.log([s, newXdomain]);
         vis.X.domain(newXdomain);
         vis.bigRect.call(
           zoom.transform,
