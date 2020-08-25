@@ -87,7 +87,6 @@ export default class MiniChart {
       const newXdomain = s.map(vis.miniX.invert, vis.miniX);
       handleNewX(newXdomain);
       handleS(s);
-      // console.log([s, newXdomain]);
     }
   }
 }

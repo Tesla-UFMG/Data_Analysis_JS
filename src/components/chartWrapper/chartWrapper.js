@@ -1,24 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
-import { extent } from "d3";
 
 import D3Chart from "../chart/chart";
-import MiniChart from "../chart/miniChart";
 
-const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, index}) => {
+const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s, newXdomain}) => {
 
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
-  const [minichart, setminiChart] = useState(null);
-  const [s, setS] = useState(null);
-  const [newXdomain, setNewXdomain] = useState(null);
-
-  const handleS = (sRecived) => {
-    return setS(sRecived);
-  };
-
-  const handleNewX = (xRecived) => {
-    return setNewXdomain(xRecived);
-  };
 
   const dataToHandle = ['Intensidade_Frenagem', 'timer', 'Speed_LR', 'Speed_RR', 'Pedal', 'accelX', 'accelY', 'accelZ', 'Volante']
 
@@ -39,29 +26,6 @@ const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, i
       })
     }
   }
-
-  useEffect(() => {
-    if (!minichart && index === 0) {
-      setminiChart(new MiniChart(chartArea.current));
-    } else if (index === 0) {
-      const xDomain = extent(data.map((d) => +d[xAxis]));
-      const lapLocation = [];
-      let lapFlag = 0;
-      
-      data.map((d) => {
-        if (d.beacon === "1" && lapFlag === 0) {
-          lapLocation.push(d[xAxis]);
-          return (lapFlag = 1);
-        } else if (d.beacon === "0" && lapFlag === 1) {
-          return (lapFlag = 0);
-        
-        }
-        return lapFlag;
-      });
-      
-      minichart.update(xDomain, lapLocation, handleNewX, handleS);
-    }
-  }, [minichart, data, xAxis, index]);
 
   useEffect(() => {
     if (!chart) {

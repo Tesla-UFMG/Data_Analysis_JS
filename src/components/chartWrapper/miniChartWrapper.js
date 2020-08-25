@@ -1,36 +1,39 @@
 import React, { useRef, useState, useEffect } from "react";
+import MiniChart from "../chart/miniChart";
 import { extent } from "d3";
 
-import MiniChart from "../chart/miniChart";
-
-function MiniWrapper(props) {
+function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
   const chartArea = useRef(null);
-  const [chart, setChart] = useState(null);
+  const [minichart, setminiChart] = useState(null);
+
+  const hS = (sRecived) => {
+    handleS(sRecived);
+  };
+  const hX = (xRecived) => {
+    handleNewX(xRecived);
+  };
 
   useEffect(() => {
-    if (!chart) {
-      setChart(new MiniChart(chartArea.current));
-    } else if (props.data) {
+    if (!minichart) {
+      setminiChart(new MiniChart(chartArea.current));
+    } else {
+      const xDomain = extent(data.map((d) => +d[xAxis]));
       const lapLocation = [];
       let lapFlag = 0;
-
-      const xDomain = extent(props.data.map((d) => +d[props.xAxis]));
-
-      props.data.map((d) => {
+      data.map((d, i) => {
         if (d.beacon === "1" && lapFlag === 0) {
-          lapLocation.push(d[props.xAxis]);
+          lapLocation.push(d[xAxis]);
           return (lapFlag = 1);
         } else if (d.beacon === "0" && lapFlag === 1) {
           return (lapFlag = 0);
         }
         return lapFlag;
       });
-      
-      chart.update(xDomain, lapLocation);
+      minichart.update(xDomain, lapLocation, hX, hS);
     }
-  }, [chart, props.data, props.xAxis]);
+  }, [minichart, data, xAxis]);
 
-  return <div className="chart-area" ref={chartArea}></div>;
+  return <div className="mini-chart-area" ref={chartArea}></div>;
 }
 
 export default MiniWrapper;
