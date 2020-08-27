@@ -2,30 +2,14 @@ import React, { useRef, useState, useEffect } from "react";
 
 import D3Chart from "../chart/chart";
 
+import useHandleData from '../../hooks/useHandleData';
+
 const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s, newXdomain}) => {
 
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
 
-  const dataToHandle = ['Intensidade_Frenagem', 'timer', 'Speed_LR', 'Speed_RR', 'Pedal', 'accelX', 'accelY', 'accelZ', 'Volante']
-
-  function handleData() {
-    if (dataToHandle.includes(yAxis)) {
-      data.map(d => {
-        if (yAxis === 'timer' || yAxis === 'accelX' || yAxis === 'accelY' || yAxis === 'accelZ') {
-          d.[yAxis] = d.[yAxis] / 1000; 
-        }
-
-        if (yAxis === 'Intensidade_Frenagem' || yAxis === 'Speed_LR' || yAxis === 'Speed_RR' || yAxis === 'Pedal') {
-          d.[yAxis] = d.[yAxis] / 10; 
-        }
-
-        if (yAxis === 'Volante') {
-          d.[yAxis] = (d.[yAxis] - 1030) / 10;
-        }
-      })
-    }
-  }
+  const [handleDataY] = useHandleData(data);
 
   useEffect(() => {
     if (!chart) {
@@ -36,7 +20,7 @@ const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s
         let yData = [];
         let xData = [];
 
-        handleData();
+        handleDataY(yAxis);
 
         let processData = data.map((d) => {
           yData.push(+d[yAxis]);
@@ -56,35 +40,32 @@ const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s
             processData[i][1] = mean;
           }
 
-          for (
-            let i = processData.length - baseNumber;
-            i < processData.length;
-            i++
-          ) {
+          for (let i = processData.length - baseNumber; i < processData.length; i++) {
             processData[i][1] = mean;
           }
+
         } else if (medianCheck) {
           let mean = 0;
 
           for (let i = 0; i < processData.length - baseNumber; i++) {
             mean = 0;
+
             for (let j = i; j < baseNumber + i; j++) {
               mean = yData.slice(i, baseNumber + i);
+
               mean.sort(function (a, b) {
                 return a - b;
               });
+
               let index = Math.floor(baseNumber / 2);
               mean = mean[index];
             }
+
             mean = mean / baseNumber;
             processData[i][1] = mean;
           }
 
-          for (
-            let i = processData.length - baseNumber;
-            i < processData.length;
-            i++
-          ) {
+          for (let i = processData.length - baseNumber; i < processData.length; i++) {
             processData[i][1] = mean;
           }
         }
