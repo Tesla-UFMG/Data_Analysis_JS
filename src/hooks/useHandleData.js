@@ -1,7 +1,7 @@
-// import { useState } from 'react';
+import { useState } from 'react';
  
 const useHandleData = (data) => {
-    const dataToHandle = ['Intensidade_Frenagem', 'timer', 'Speed_LR', 'Speed_RR', 'Pedal', 'accelX', 'accelY', 'accelZ', 'Volante']
+    const [dataToHandle, setDataToHandle] = useState(['Intensidade_Frenagem', 'timer', 'Speed_LR', 'Speed_RR', 'Pedal', 'accelX', 'accelY', 'accelZ', 'Volante'])
 
     function handleDataX(xAxis) {
         if (dataToHandle.includes(xAxis)) {
@@ -18,6 +18,12 @@ const useHandleData = (data) => {
                     d.[xAxis] = (d.[xAxis] - 1030) / 10;
                 }
             })
+
+            const index = dataToHandle.indexOf(xAxis)
+            const array_aux = dataToHandle
+            array_aux.splice(index, 1);
+            setDataToHandle(array_aux)
+            console.log(dataToHandle)
         }
     };
 
@@ -38,6 +44,12 @@ const useHandleData = (data) => {
 
                 return [...aux, yAxis]
             })
+
+            const index = dataToHandle.indexOf(yAxis)
+            const array_aux = dataToHandle
+            array_aux.splice(index, 1);
+            setDataToHandle(array_aux)
+            console.log(dataToHandle)
         }
     };
 
