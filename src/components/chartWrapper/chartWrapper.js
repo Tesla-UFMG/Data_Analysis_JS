@@ -2,31 +2,51 @@ import React, { useRef, useState, useEffect } from "react";
 
 import D3Chart from "../chart/chart";
 
-const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s, newXdomain}) => {
-
+const ChartWrapper = ({
+  data,
+  yAxis,
+  xAxis,
+  filterN,
+  medianCheck,
+  avarageCheck,
+  s,
+  newXdomain,
+}) => {
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
+  const dataToHandle = [
+    "Intensidade_Frenagem",
+    "Speed_LR",
+    "Speed_RR",
+    "Pedal",
+    "accelX",
+    "accelY",
+    "accelZ",
+    "Volante",
+  ];
 
-  const dataToHandle = ['Intensidade_Frenagem', 'timer', 'Speed_LR', 'Speed_RR', 'Pedal', 'accelX', 'accelY', 'accelZ', 'Volante']
-
-  function handleData() {
+  useEffect(() => {
     if (dataToHandle.includes(yAxis)) {
-      data.map(d => {
-        if (yAxis === 'timer' || yAxis === 'accelX' || yAxis === 'accelY' || yAxis === 'accelZ') {
-          d.[yAxis] = d.[yAxis] / 1000; 
+      data.map((d) => {
+        if (yAxis === "accelX" || yAxis === "accelY" || yAxis === "accelZ") {
+          d[yAxis] = d[yAxis] / 1000;
         }
 
-        if (yAxis === 'Intensidade_Frenagem' || yAxis === 'Speed_LR' || yAxis === 'Speed_RR' || yAxis === 'Pedal') {
-          d.[yAxis] = d.[yAxis] / 10; 
+        if (
+          yAxis === "Intensidade_Frenagem" ||
+          yAxis === "Speed_LR" ||
+          yAxis === "Speed_RR" ||
+          yAxis === "Pedal"
+        ) {
+          d[yAxis] = d[yAxis] / 10;
         }
 
-        if (yAxis === 'Volante') {
-          d.[yAxis] = (d.[yAxis] - 1030) / 10;
+        if (yAxis === "Volante") {
+          d[yAxis] = (d[yAxis] - 1030) / 10;
         }
-      })
+      });
     }
-  }
-
+  }, [data]);
   useEffect(() => {
     if (!chart) {
       setChart(new D3Chart(chartArea.current));
@@ -35,8 +55,6 @@ const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s
         const baseNumber = +filterN;
         let yData = [];
         let xData = [];
-
-        handleData();
 
         let processData = data.map((d) => {
           yData.push(+d[yAxis]);
@@ -95,7 +113,17 @@ const ChartWrapper = ({data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s
         chart.update(processData, yAxis, s, newXdomain);
       }
     }
-  }, [chart, data, yAxis, xAxis, filterN, medianCheck, avarageCheck, s, newXdomain]);
+  }, [
+    chart,
+    data,
+    yAxis,
+    xAxis,
+    filterN,
+    medianCheck,
+    avarageCheck,
+    s,
+    newXdomain,
+  ]);
 
   return <div className="chart-area" ref={chartArea}></div>;
 };

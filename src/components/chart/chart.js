@@ -1,11 +1,11 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 0, left: 40, right: 10, bottom: 0 };
+const MARGIN = { top: 0, left: 40, right: 60, bottom: 0 };
 
 var windowWidth = window.innerWidth - 100;
 var vw = windowWidth / 100;
 
-var graphWidth = windowWidth - (5*vw);
+var graphWidth = windowWidth - 5 * vw;
 
 const width = { Graph: graphWidth };
 const height = { Graph: 200 };
@@ -80,11 +80,12 @@ export default class D3Chart {
       .style("pointer-events", "all");
 
     vis.lineClip = vis.svg.append("g").attr("clip-path", "url(#clip)");
+    vis.horizontalLines = vis.svg.append("g").attr("id", "horizontalLines");
+    vis.horizontalLineCounter = 0;
   }
 
   update(data, yAxis, s, newXdomain) {
     const vis = this;
-
     if (data) {
       vis.data = data;
       const xData = [];
@@ -153,7 +154,8 @@ export default class D3Chart {
         .on("mouseout", function () {
           vis.focus.style("opacity", "0.6");
         })
-        .on("mousemove", mousemove);
+        .on("mousemove", mousemove)
+        .on("click", mouseclick);
       function mousemove() {
         const x0 = vis.X.invert(d3.mouse(this)[0]);
 
@@ -173,6 +175,35 @@ export default class D3Chart {
           .attr("x", toolTipX)
           .attr("y", toolTipY)
           .text(`(${coordenadaX}, ${coordenadaY})`);
+      }
+      function mouseclick() {
+        const x0 = vis.X.invert(d3.mouse(this)[0]);
+        const Index = d3.bisect(xData, x0);
+        const coordenadaY = yData[Index];
+        const toolTipY = vis.Y(coordenadaY);
+        vis.horizontalLines
+          .append("line")
+          .attr("x1", 0)
+          .attr("y1", toolTipY)
+          .attr("x2", width.Graph)
+          .attr("y2", toolTipY)
+          .attr("stroke", "black")
+          .attr("stroke-width", 2)
+          .attr("opacity", 0.6)
+          .attr("id", `line${vis.horizontalLineCounter}`);
+        vis.horizontalLines
+          .append("text")
+          .attr("id", `text${vis.horizontalLineCounter}`)
+          .attr("class", "text")
+          .attr("y", toolTipY)
+          .text(`${coordenadaY}`)
+          .attr("x", width.Graph)
+          .on("mousedown", function () {
+            vis.horizontalLines.select(`#${this.id}`).remove();
+            const auxLine = this.id.replace("text", "line");
+            vis.horizontalLines.select(`#${auxLine}`).remove();
+          });
+        vis.horizontalLineCounter++;
       }
     }
   }

@@ -12,11 +12,20 @@ function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
   const hX = (xRecived) => {
     handleNewX(xRecived);
   };
+  useEffect(() => {
+    var windowWidth = window.innerWidth - 100;
+    var vw = windowWidth / 100;
+    var graphWidth = windowWidth - 5 * vw;
+    const width = { Mini: graphWidth };
+    if (!minichart) {
+      setminiChart(new MiniChart(chartArea.current, width));
+    } else {
+      minichart.remakeSVG(width);
+    }
+  }, [minichart]);
 
   useEffect(() => {
-    if (!minichart) {
-      setminiChart(new MiniChart(chartArea.current));
-    } else {
+    if (minichart) {
       const xDomain = extent(data.map((d) => +d[xAxis]));
       const lapLocation = [];
       let lapFlag = 0;

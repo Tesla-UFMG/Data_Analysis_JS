@@ -1,30 +1,22 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 30, left: 50, right: 10, bottom: 70 };
-
-var windowWidth = window.innerWidth - 100;
-var vw = windowWidth / 100;
-
-var graphWidth = windowWidth - (5*vw);
-
-const width = { Mini: graphWidth };
 const height = { Mini: 50 };
-
+const MARGIN = { top: 30, left: 50, right: 10, bottom: 70 };
 export default class MiniChart {
-  constructor(element) {
+  constructor(element, width) {
     const vis = this;
-
+    vis.width = width;
     vis.miniSvg = d3
       .select(element)
       .append("svg")
-      .attr("width", width.Mini + MARGIN.left + MARGIN.right)
+      .attr("width", vis.width.Mini + MARGIN.left + MARGIN.right)
       .attr("height", height.Mini + MARGIN.top + MARGIN.bottom)
       .append("g")
       .attr("transform", `translate(${MARGIN.left}, ${MARGIN.top})`);
 
     vis.miniLapLines = vis.miniSvg.append("g").attr("class", "laplines");
 
-    vis.miniX = d3.scaleLinear().range([0, width.Mini]);
+    vis.miniX = d3.scaleLinear().range([0, vis.width.Mini]);
     vis.miniY = d3.scaleLinear().range([0, height.Mini]);
 
     vis.minixLabelGroup = vis.miniSvg
@@ -35,7 +27,12 @@ export default class MiniChart {
 
     vis.brush = vis.miniSvg.append("g").attr("class", "brush");
   }
-  
+  remakeSVG(width) {
+    const vis = this;
+    vis.width = width;
+    vis.miniSvg.attr("width", vis.width.Mini + MARGIN.left + MARGIN.right);
+    vis.miniX = d3.scaleLinear().range([0, vis.width.Mini]);
+  }
   update(xDomain, lapLocation, handleNewX, handleS) {
     const vis = this;
 
@@ -75,7 +72,7 @@ export default class MiniChart {
       .brushX()
       .extent([
         [0, 0],
-        [width.Mini, height.Mini],
+        [vis.width.Mini, height.Mini],
       ])
       .on("end", brushed);
     vis.brush.call(brush).call(brush.move, vis.miniX.range());

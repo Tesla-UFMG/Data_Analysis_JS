@@ -8,6 +8,7 @@ import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
 import ConfigRow from "./components/configRow/configRow";
 import Dropdown from "./components/dropdown/dropdown";
 import MiniWrapper from "../../../components/chartWrapper/miniChartWrapper";
+import Xlabelwrapper from "../../../components/chartWrapper/xlabelwrapper";
 
 import "./tabGeral.css";
 
@@ -63,7 +64,7 @@ function TabGeral() {
     );
   }
   function renderChart() {
-    return axisY.map((axis, i) => {
+    return axisY.map((axis) => {
       return (
         <ChartWrapper
           key={axis.column}
@@ -78,6 +79,9 @@ function TabGeral() {
         />
       );
     });
+  }
+  function renderXLabel() {
+    return <Xlabelwrapper newXdomain={newXdomain}></Xlabelwrapper>;
   }
 
   return (
@@ -117,6 +121,7 @@ function TabGeral() {
       </div>
       <div>{submit && renderMiniChart()}</div>
       <div className="chart">{submit && renderChart()}</div>
+      <div className="xlabelarea">{submit && renderXLabel()}</div>
 
       <div className="row">
         <button type="button" className="btn opcoes-avancadas-button">
