@@ -15,13 +15,10 @@ import "./tabGeral.css";
 function TabGeral() {
   const history = useHistory();
 
-  const [selectFile, setSelectFile] = useContext(FileContext);
+  const [selectFile] = useContext(FileContext);
 
   const [data, setData] = useState([]);
-
-  // const [dataframe, setDataframe] = useState({})
   const [axisX, setAxisX] = useState({ value: "timer", label: "Timer" });
-
   const [axisY, setAxisY] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [filterN, setFilterN] = useState(1);
@@ -44,25 +41,17 @@ function TabGeral() {
     }
   }, []);
 
-  function plotingGraphs() {
-    setSubmit(true);
-  }
-  const handleS = (sRecived) => {
-    return setS(sRecived);
-  };
-  const handleNewX = (xRecived) => {
-    return setNewXdomain(xRecived);
-  };
   function renderMiniChart() {
     return (
       <MiniWrapper
         data={data}
         xAxis={axisX.value}
-        handleS={handleS}
-        handleNewX={handleNewX}
-      ></MiniWrapper>
+        handleS={sRecived => setS(sRecived)}
+        handleNewX={xRecived => setNewXdomain(xRecived)}
+      />
     );
   }
+
   function renderChart() {
     return axisY.map((axis) => {
       return (
@@ -111,14 +100,11 @@ function TabGeral() {
       />
 
       <div className="row">
-        <button
-          type="button"
-          className="btn plot-button"
-          onClick={plotingGraphs}
-        >
+        <button  type="button" className="btn plot-button" onClick={() => setSubmit(true)}>
           Plotar
         </button>
       </div>
+
       <div>{submit && renderMiniChart()}</div>
       <div className="chart">{submit && renderChart()}</div>
       <div className="xlabelarea">{submit && renderXLabel()}</div>

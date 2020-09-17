@@ -86,14 +86,18 @@ const ChartWrapper = ({
 
           for (let i = 0; i < processData.length - baseNumber; i++) {
             mean = 0;
+
             for (let j = i; j < baseNumber + i; j++) {
               mean = yData.slice(i, baseNumber + i);
+
               mean.sort(function (a, b) {
                 return a - b;
               });
+
               let index = Math.floor(baseNumber / 2);
               mean = mean[index];
             }
+
             mean = mean / baseNumber;
             processData[i][1] = mean;
           }
