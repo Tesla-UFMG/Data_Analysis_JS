@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 
 import './paginaGrafico.css';
 
+import { ChartProvider } from '../../context/chartContext';
+
 import TabGeral from './TabGeral/tabGeral';
+import TabConfig from './TabConfig/tabConfig';
 
 function PaginaGrafico() {
     const [geral, setGeral] = useState(true);
@@ -12,7 +15,7 @@ function PaginaGrafico() {
         if (geral === true) {
             return <TabGeral />
         } else {
-            return <div>Configuracoes</div>
+            return <TabConfig />
         }
     }
 
@@ -45,7 +48,9 @@ function PaginaGrafico() {
                 </div>
 
                 <div className="page-grafico-content">
-                    {show_tab()}
+                    <ChartProvider>
+                        {show_tab()}
+                    </ChartProvider>
                 </div>
             </div>
         </div>

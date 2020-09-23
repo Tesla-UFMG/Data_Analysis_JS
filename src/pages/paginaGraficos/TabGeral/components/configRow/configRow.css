@@ -16,9 +16,9 @@
     padding-left: 0;
 }
 
-.config-row .some-config:last-child {
+/* .config-row .some-config:last-child {
     border-right: none;
-}
+} */
 
 .config-row .some-config .config-title {
     color: black;

@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { tsv } from "d3";
 
 import { FileContext } from "../../../context/fileContext";
+import { ChartContext } from "../../../context/chartContext";
 
 import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
 import ConfigRow from "./components/configRow/configRow";
@@ -16,6 +17,7 @@ function TabGeral() {
   const history = useHistory();
 
   const [selectFile] = useContext(FileContext);
+  const chartValues = useContext(ChartContext);
 
   const [data, setData] = useState([]);
   const [axisX, setAxisX] = useState({ value: "timer", label: "Timer" });
@@ -73,6 +75,11 @@ function TabGeral() {
     return <Xlabelwrapper newXdomain={newXdomain}></Xlabelwrapper>;
   }
 
+  function handleAxisY(value) {
+    setAxisY(value)
+    chartValues.setAxisYSelect(value)
+  }
+
   return (
     <div id="tab-geral">
       <h1 className="tab-title">Opções de Plotagem</h1>
@@ -89,7 +96,7 @@ function TabGeral() {
           data={data}
           label="Eixo Y"
           name="axis-y"
-          selectedAxis={(value) => setAxisY(value)}
+          selectedAxis={(value) => handleAxisY(value)}
         />
       </form>
 
@@ -108,12 +115,7 @@ function TabGeral() {
       <div>{submit && renderMiniChart()}</div>
       <div className="chart">{submit && renderChart()}</div>
       <div className="xlabelarea">{submit && renderXLabel()}</div>
-
-      <div className="row">
-        <button type="button" className="btn opcoes-avancadas-button">
-          Opções Avançadas
-        </button>
-      </div>
+      
     </div>
   );
 }

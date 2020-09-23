@@ -99,7 +99,7 @@ function ConfigRow({ filterN, median, avarage }) {
         </div>
       </div>
 
-      <div className="some-config">
+      {/* <div className="some-config">
         <h1 className="config-title">Linhas de Referência</h1>
 
         <div className="check-container">
@@ -176,7 +176,7 @@ function ConfigRow({ filterN, median, avarage }) {
             Destacar voltas
           </label>
         </div>
-      </div>
+      </div> */}
 
       <div className="some-config">
         <h1 className="config-title">Sobreposição de Voltas</h1>
