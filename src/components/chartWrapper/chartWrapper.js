@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 
 import D3Chart from "../chart/chart";
-
 const ChartWrapper = ({
   data,
   yAxis,
@@ -11,6 +10,8 @@ const ChartWrapper = ({
   avarageCheck,
   s,
   newXdomain,
+  handleVertical,
+  vertical,
 }) => {
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
@@ -24,6 +25,9 @@ const ChartWrapper = ({
     "accelZ",
     "Volante",
   ];
+  const handleVerticalLine = (Xcoordinate) => {
+    handleVertical(Xcoordinate);
+  };
 
   useEffect(() => {
     if (dataToHandle.includes(yAxis)) {
@@ -111,7 +115,7 @@ const ChartWrapper = ({
           }
         }
 
-        chart.update(processData, yAxis, s, newXdomain);
+        chart.update(processData, yAxis, s, newXdomain, handleVerticalLine);
       } else {
         let processData = null;
         chart.update(processData, yAxis, s, newXdomain);
@@ -128,7 +132,12 @@ const ChartWrapper = ({
     s,
     newXdomain,
   ]);
-
+  useEffect(() => {
+    if (!chart);
+    else {
+      chart.verticalLine(vertical);
+    }
+  }, [chart, vertical]);
   return <div className="chart-area" ref={chartArea}></div>;
 };
 

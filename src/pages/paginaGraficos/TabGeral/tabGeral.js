@@ -26,6 +26,7 @@ function TabGeral() {
   const [medianCheck, setMedianCheck] = useState(false);
   const [s, setS] = useState(0);
   const [newXdomain, setNewXdomain] = useState(0);
+  const [vertical, setVertical] = useState(0);
 
   useEffect(() => {
     const fileName = selectFile.map((file) => {
@@ -46,11 +47,14 @@ function TabGeral() {
       <MiniWrapper
         data={data}
         xAxis={axisX.value}
-        handleS={sRecived => setS(sRecived)}
-        handleNewX={xRecived => setNewXdomain(xRecived)}
+        handleS={(sRecived) => setS(sRecived)}
+        handleNewX={(xRecived) => setNewXdomain(xRecived)}
       />
     );
   }
+  const handleVertical = (verticalRecive) => {
+    setVertical(verticalRecive);
+  };
 
   function renderChart() {
     return axisY.map((axis) => {
@@ -65,6 +69,8 @@ function TabGeral() {
           medianCheck={medianCheck}
           s={s}
           newXdomain={newXdomain}
+          handleVertical={handleVertical}
+          vertical={vertical}
         />
       );
     });
@@ -100,7 +106,11 @@ function TabGeral() {
       />
 
       <div className="row">
-        <button  type="button" className="btn plot-button" onClick={() => setSubmit(true)}>
+        <button
+          type="button"
+          className="btn plot-button"
+          onClick={() => setSubmit(true)}
+        >
           Plotar
         </button>
       </div>

@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 0, left: 40, right: 60, bottom: 0 };
+const MARGIN = { top: 2, left: 40, right: 80, bottom: 1 };
 
 var windowWidth = window.innerWidth - 100;
 var vw = windowWidth / 100;
@@ -37,7 +37,7 @@ export default class D3Chart {
     vis.yTextLabel = vis.svg
       .append("text")
       .attr("x", 0)
-      .attr("y", 0)
+      .attr("y", 10)
       .attr("text-achor", "middle")
       .attr("fill", "black");
 
@@ -52,7 +52,7 @@ export default class D3Chart {
       .attr("y", 0);
 
     //TOOLTIP
-    vis.focus = vis.svg.append("g").style("display", "none");
+    vis.focus = vis.svg.append("g");
     vis.focus
       .append("circle")
       .attr("class", "y")
@@ -84,13 +84,13 @@ export default class D3Chart {
     vis.horizontalLineCounter = 0;
   }
 
-  update(data, yAxis, s, newXdomain) {
+  update(data, yAxis, s, newXdomain, handleVericalLine) {
     const vis = this;
     if (data) {
       vis.data = data;
-      const xData = [];
-      const yData = [];
-      vis.data.map((d) => (xData.push(d[0]), yData.push(d[1])));
+      vis.xData = [];
+      vis.yData = [];
+      vis.data.map((d) => (vis.xData.push(d[0]), vis.yData.push(d[1])));
       const xDomain = d3.extent(vis.data.map((d) => d[0]));
       const yDomain = d3.extent(vis.data.map((d) => d[1]));
       vis.X.domain(xDomain);
@@ -148,7 +148,6 @@ export default class D3Chart {
       //TOOLTIP
       vis.bigRect
         .on("mouseover", function () {
-          vis.focus.style("display", null);
           vis.focus.style("opacity", "1");
         })
         .on("mouseout", function () {
@@ -159,27 +158,13 @@ export default class D3Chart {
       function mousemove() {
         const x0 = vis.X.invert(d3.mouse(this)[0]);
 
-        const Index = d3.bisect(xData, x0);
-        const coordenadaX = xData[Index];
-        const coordenadaY = yData[Index];
-        const toolTipX = vis.X(coordenadaX);
-        const toolTipY = vis.Y(coordenadaY);
-        vis.focus
-          .select("circle.y")
-          .attr("transform", `translate(${toolTipX}, ${toolTipY})`);
-        vis.focus
-          .select("path.y")
-          .attr("transform", `translate(${toolTipX},0)`);
-        vis.focus
-          .select("text")
-          .attr("x", toolTipX)
-          .attr("y", toolTipY)
-          .text(`(${coordenadaX}, ${coordenadaY})`);
+        const Index = d3.bisect(vis.xData, x0);
+        handleVericalLine(Index);
       }
       function mouseclick() {
         const x0 = vis.X.invert(d3.mouse(this)[0]);
-        const Index = d3.bisect(xData, x0);
-        const coordenadaY = yData[Index];
+        const Index = d3.bisect(vis.xData, x0);
+        const coordenadaY = vis.yData[Index];
         const toolTipY = vis.Y(coordenadaY);
         vis.horizontalLines
           .append("line")
@@ -206,5 +191,21 @@ export default class D3Chart {
         vis.horizontalLineCounter++;
       }
     }
+  }
+  verticalLine(vertical) {
+    const vis = this;
+    const coordenadaX = vis.xData[vertical];
+    const coordenadaY = vis.yData[vertical];
+    const toolTipX = vis.X(coordenadaX);
+    const toolTipY = vis.Y(coordenadaY);
+    vis.focus
+      .select("circle.y")
+      .attr("transform", `translate(${toolTipX}, ${toolTipY})`);
+    vis.focus.select("path.y").attr("transform", `translate(${toolTipX},0)`);
+    vis.focus
+      .select("text")
+      .attr("x", toolTipX)
+      .attr("y", toolTipY)
+      .text(`(${coordenadaX}, ${coordenadaY})`);
   }
 }
