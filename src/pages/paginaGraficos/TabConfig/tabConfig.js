@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import './tabConfig.css'
 
 import { ChartContext } from "../../../context/chartContext";
-import { event } from 'd3';
 
 function TabConfig() {
     const chartValues = useContext(ChartContext);
@@ -44,7 +43,7 @@ function TabConfig() {
 
             <h1 className="tab-title">Cor das linhas:</h1>
             <div className="color-graficos">
-                {chartValues.axisYSelect.map(axis => {
+                {chartValues.axisY.map(axis => {
                     return (
                         <div>
                             <label className="label-color" htmlFor={"input-" + axis.column}>
