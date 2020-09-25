@@ -10,6 +10,35 @@ function TabOutros() {
     const chartValues = useContext(ChartContext);
 
     const [submit, setSubmit] = useState(false);
+    const n_voltas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    let contador = 0;
+
+    function renderCheckboxVoltas() {
+        return (
+            n_voltas.map((laps, i) => {
+                if (i*3 < n_voltas.length) {
+                    return (
+                        <div className="checkbox-wrapper">
+                            {n_voltas.map((lap, index) => {
+                                if (index < 3 && contador < n_voltas.length) {
+                                    contador++;
+                                    return (<div>
+                                        <input type="checkbox"
+                                            className="laps-checkbox"
+                                            name="laps"
+                                            id={"lap-" + contador}
+                                            value={"lap-" + contador}
+                                        />
+                                        <label className="label-lap" htmlFor={"lap-" + contador}>Volta {contador}</label>
+                                    </div>);
+                                }
+                            })}
+                        </div>
+                    );
+                }
+            })
+        );
+    }
 
     return (
         <div id="tab-outros">
@@ -33,6 +62,24 @@ function TabOutros() {
                     })} // Se não quiser que venha os eixos ja selecionados no TabGeral, só tirar o defaultValue
                 />
             </form>
+
+            <div className="row options-row">
+                <div className="some-options">
+                    <h1 className="option-title">Tipos de Gráficos</h1>
+
+                    <div className="inputs-container">
+                        {renderCheckboxVoltas()}
+                    </div>
+                </div>
+
+                <div className="some-options">
+                    <h1 className="option-title">Canais matemáticos</h1>
+
+                    <div className="inputs-container">
+                        <p>Dropdown</p>
+                    </div>
+                </div>
+            </div>
 
             <div className="row">
                 <button  type="button" className="btn plot-button" onClick={() => setSubmit(true)}>
