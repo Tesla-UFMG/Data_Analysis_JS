@@ -30,19 +30,6 @@
   background-color: #3a9e2f;
 }
 
-#tab-geral .opcoes-avancadas-button {
-  color: white;
-  background-color: #888686;
-
-  margin-top: 10px;
-
-  transition: 0.5s;
-}
-
-#tab-geral .opcoes-avancadas-button:hover {
-  background-color: #696868;
-}
-
 #tab-geral .chart {
   background-color: white;
   border-radius: 10px;

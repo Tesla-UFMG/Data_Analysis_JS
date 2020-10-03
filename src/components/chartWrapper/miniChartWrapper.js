@@ -9,8 +9,6 @@ function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
   const chartArea = useRef(null);
   const [minichart, setminiChart] = useState(null);
 
-  const [handleDataX] = useHandleData(data);
-
   const hS = (sRecived) => {
     handleS(sRecived);
   };

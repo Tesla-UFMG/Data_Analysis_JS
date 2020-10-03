@@ -3,42 +3,42 @@ import React, { useState } from "react";
 import "./configRow.css";
 
 function ConfigRow({ filterN, median, avarage }) {
-  const [refLine, setRefLine] = useState(true);
+  // const [refLine, setRefLine] = useState(true);
 
-  const handleRefLine = () => {
-    const definirGrafico = document.getElementById("switch-definir-grafico");
-    const definirValor = document.getElementById("switch-definir-valor");
+  // const handleRefLine = () => {
+  //   const definirGrafico = document.getElementById("switch-definir-grafico");
+  //   const definirValor = document.getElementById("switch-definir-valor");
 
-    if (definirGrafico.checked) {
-      console.log("Definir no Grafico");
-    } else if (definirValor.checked) {
-      console.log("Definir valor manualmente");
-    }
-  };
+  //   if (definirGrafico.checked) {
+  //     console.log("Definir no Grafico");
+  //   } else if (definirValor.checked) {
+  //     console.log("Definir valor manualmente");
+  //   }
+  // };
 
-  const handleDividirVoltas = () => {
-    const divisaoVoltas = document.getElementById("switch-div-voltas");
+  // const handleDividirVoltas = () => {
+  //   const divisaoVoltas = document.getElementById("switch-div-voltas");
 
-    if (divisaoVoltas.checked) {
-      console.log("Divisão de Voltas");
-    }
-  };
+  //   if (divisaoVoltas.checked) {
+  //     console.log("Divisão de Voltas");
+  //   }
+  // };
 
-  const handleDestacarVoltas = () => {
-    const destacarVoltas = document.getElementById("switch-destacar-voltas");
+  // const handleDestacarVoltas = () => {
+  //   const destacarVoltas = document.getElementById("switch-destacar-voltas");
 
-    if (destacarVoltas.checked) {
-      console.log("Destacar Voltas");
-    }
-  };
+  //   if (destacarVoltas.checked) {
+  //     console.log("Destacar Voltas");
+  //   }
+  // };
 
-  const handleSobrepor = () => {
-    const sobrepor = document.getElementById("switch-sobrepor-voltas");
+  // const handleSobrepor = () => {
+  //   const sobrepor = document.getElementById("switch-sobrepor-voltas");
 
-    if (sobrepor.checked) {
-      console.log("Sobrepor Voltas");
-    }
-  };
+  //   if (sobrepor.checked) {
+  //     console.log("Sobrepor Voltas");
+  //   }
+  // };
 
   const handleInputChange = () => {
     const value = document.getElementById("subsequencia").value;
@@ -99,7 +99,7 @@ function ConfigRow({ filterN, median, avarage }) {
         </div>
       </div>
 
-      <div className="some-config">
+      {/* <div className="some-config">
         <h1 className="config-title">Linhas de Referência</h1>
 
         <div className="check-container">
@@ -176,9 +176,9 @@ function ConfigRow({ filterN, median, avarage }) {
             Destacar voltas
           </label>
         </div>
-      </div>
+      </div> */}
 
-      <div className="some-config">
+      {/* <div className="some-config">
         <h1 className="config-title">Sobreposição de Voltas</h1>
 
         <div className="custom-control custom-switch">
@@ -193,7 +193,7 @@ function ConfigRow({ filterN, median, avarage }) {
             Sobrepor Voltas
           </label>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

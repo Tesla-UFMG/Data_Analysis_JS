@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { tsv } from "d3";
 
 import { FileContext } from "../../../context/fileContext";
+import { ChartContext } from "../../../context/chartContext";
 
 import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
 import ConfigRow from "./components/configRow/configRow";
@@ -16,10 +17,8 @@ function TabGeral() {
   const history = useHistory();
 
   const [selectFile] = useContext(FileContext);
+  const chartValues = useContext(ChartContext);
 
-  const [data, setData] = useState([]);
-  const [axisX, setAxisX] = useState({ value: "timer", label: "Timer" });
-  const [axisY, setAxisY] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [filterN, setFilterN] = useState(1);
   const [avarageCheck, setAvarageCheck] = useState(false);
@@ -35,7 +34,7 @@ function TabGeral() {
 
     if (fileName.length !== 0) {
       tsv(fileName[0].file)
-        .then((d) => setData(d))
+        .then((d) => chartValues.setData(d))
         .catch((err) => console.log(err));
     } else {
       history.push("/");
@@ -45,8 +44,8 @@ function TabGeral() {
   function renderMiniChart() {
     return (
       <MiniWrapper
-        data={data}
-        xAxis={axisX.value}
+        data={chartValues.data}
+        xAxis={chartValues.axisX.value}
         handleS={(sRecived) => setS(sRecived)}
         handleNewX={(xRecived) => setNewXdomain(xRecived)}
       />
@@ -57,12 +56,12 @@ function TabGeral() {
   };
 
   function renderChart() {
-    return axisY.map((axis) => {
+    return chartValues.axisY.map((axis) => {
       return (
         <ChartWrapper
           key={axis.column}
-          data={data}
-          xAxis={axisX.value}
+          data={chartValues.data}
+          xAxis={chartValues.axisX.value}
           yAxis={axis.column}
           filterN={filterN}
           avarageCheck={avarageCheck}
@@ -85,17 +84,20 @@ function TabGeral() {
 
       <form>
         <Dropdown
-          data={data}
+          data={chartValues.data}
           label="Eixo X"
           name="axis-X"
-          selectedAxis={(value) => setAxisX(value)}
+          selectedAxis={(value) => chartValues.setAxisX(value)}
           defaultValue={{ value: "timer", label: "Timer" }}
         />
         <Dropdown
-          data={data}
+          data={chartValues.data}
           label="Eixo Y"
           name="axis-y"
-          selectedAxis={(value) => setAxisY(value)}
+          selectedAxis={(value) => chartValues.setAxisY(value)}
+          defaultValue={chartValues.axisY.map((axis) => {
+            return { value: axis.column, label: axis.column };
+          })}
         />
       </form>
 
@@ -118,12 +120,6 @@ function TabGeral() {
       <div>{submit && renderMiniChart()}</div>
       <div className="chart">{submit && renderChart()}</div>
       <div className="xlabelarea">{submit && renderXLabel()}</div>
-
-      <div className="row">
-        <button type="button" className="btn opcoes-avancadas-button">
-          Opções Avançadas
-        </button>
-      </div>
     </div>
   );
 }

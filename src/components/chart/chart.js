@@ -90,7 +90,10 @@ export default class D3Chart {
       vis.data = data;
       vis.xData = [];
       vis.yData = [];
-      vis.data.map((d) => (vis.xData.push(d[0]), vis.yData.push(d[1])));
+      vis.data.map((d) => {
+        vis.xData.push(d[0]);
+        vis.yData.push(d[1]);
+      });
       const xDomain = d3.extent(vis.data.map((d) => d[0]));
       const yDomain = d3.extent(vis.data.map((d) => d[1]));
       vis.X.domain(xDomain);
