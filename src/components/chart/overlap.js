@@ -1,14 +1,14 @@
 import * as d3 from "d3";
 import { line } from "d3";
 
-const MARGIN = { top: 30, left: 50, right: 80, bottom: 30 };
+const MARGIN = { top: 10, left: 40, right: 0, bottom: 30 };
 
-var windowWidth = window.innerWidth - 100;
-var vw = windowWidth / 100;
+var windowWidth = window.innerWidth - 200;
+// var vw = windowWidth / 100;
 
-var graphWidth = windowWidth - 5 * vw;
+// var graphWidth = windowWidth - 5 * vw;
 
-const width = { Graph: graphWidth };
+const width = { Graph: windowWidth };
 const height = { Graph: 300 };
 
 export default class Overlap {

@@ -15,7 +15,7 @@ function TabOutros() {
     if (channelOption[0]) {
       switch (channelOption[0].column) {
         case "Sobreposiçao de Voltas":
-          return <LapDivision></LapDivision>;
+          return <LapDivision />;
       }
     }
   };

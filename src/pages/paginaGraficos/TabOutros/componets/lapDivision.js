@@ -5,21 +5,26 @@ import OverlapWrapper from "../../../../components/chartWrapper/overlapWrapper";
 
 function LapDivision() {
   const chartValues = useContext(ChartContext);
+
   const [dataX, setDataX] = useState([]);
   const [dataY, setDataY] = useState([]);
   const [dataLap, setDataLap] = useState(null);
   const [lapSelected, setLapSelected] = useState([]);
+
   useEffect(() => {
     setDataX(chartValues.data.map((d) => +d[chartValues.axisX.value]));
   }, [chartValues.data, chartValues.axisX]);
+
   useEffect(() => {
     if (chartValues.axisY[0])
       setDataY(chartValues.data.map((d) => +d[chartValues.axisY[0].column]));
   }, [chartValues.data, chartValues.axisY]);
+
   useEffect(() => {
     let lapFlag = 0;
     let contador = 0;
     let index = [];
+
     chartValues.data.map((d) => {
       if (d.beacon === "1") {
         if (!lapFlag) index.push(contador);
@@ -32,37 +37,52 @@ function LapDivision() {
 
   const getCheck = () => {
     const laps = [];
-    for (let i = 0; i < dataLap.length; i++) {
-      const id = `lap-${i}`;
+
+    for (let i = 0; i < dataLap.length - 1; i++) {
+      const id = `lap-${i+1}`;
       const check = document.getElementById(id);
+
       if (check.checked === true) {
         laps.push(i);
       }
     }
+
     setLapSelected(laps);
   };
 
+  let cont = 0
   const renderCheckboxVoltas = () => {
     if (dataLap) {
-      return dataLap.map((index, i) => (
-        <div key={`lap ${i}`} className="checkbox-wrapper">
-          <div key={`${i} lap`}>
-            <input
-              type="checkbox"
-              className="laps-checkbox"
-              name="laps"
-              id={"lap-" + i}
-              value={"lap-" + i}
-              onClick={getCheck}
-            />
-            <label className="label-lap" htmlFor={"lap-" + i}>
-              Volta {i}
-            </label>
-          </div>
-        </div>
-      ));
+      return (
+        dataLap.map((laps, i) => {
+          if (i*3 < dataLap.length - 1) {
+            return (
+              <div className="checkbox-wrapper" key={`lap ${i}`}>
+                {dataLap.map((lap, index) => {
+                  if (index < 3 && cont < dataLap.length - 1) {
+                    cont++;
+                    return (
+                      <div key={`${i} lap`}>
+                        <input type="checkbox"
+                          className="laps-checkbox"
+                          name="laps"
+                          id={"lap-" + cont}
+                          value={"lap-" + cont}
+                          onClick={getCheck}
+                        />
+                        <label className="label-lap" htmlFor={"lap-" + cont}>Volta {cont}</label>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            );
+          }
+        })
+      );
     }
   };
+
   const renderOverLapChart = () => {
     if (dataX && chartValues.axisY && dataLap) {
       return (
@@ -71,7 +91,7 @@ function LapDivision() {
           dataY={dataY}
           lapSelected={lapSelected}
           lapIndex={dataLap}
-        ></OverlapWrapper>
+        />
       );
     }
   };
@@ -96,8 +116,9 @@ function LapDivision() {
           })}
         />
       </form>
+
       <div className="inputs-container">{renderCheckboxVoltas()}</div>
-      <div>{renderOverLapChart()}</div>
+      <div className="overlap-area">{renderOverLapChart()}</div>
     </div>
   );
 }

@@ -1,13 +1,13 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 2, left: 40, right: 80, bottom: 1 };
+const MARGIN = { top: 2, left: 40, right: 0, bottom: 1 };
 
-var windowWidth = window.innerWidth - 100;
-var vw = windowWidth / 100;
+var windowWidth = window.innerWidth - 200;
+// var vw = windowWidth / 100;
 
-var graphWidth = windowWidth - 5 * vw;
+// var graphWidth = windowWidth - (8 * vw);
 
-const width = { Graph: graphWidth };
+const width = { Graph: windowWidth };
 const height = { Graph: 200 };
 
 export default class D3Chart {
