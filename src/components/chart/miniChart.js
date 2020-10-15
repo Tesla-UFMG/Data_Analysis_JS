@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 const height = { Mini: 50 };
-const MARGIN = { top: 30, left: 50, right: 10, bottom: 70 };
+const MARGIN = { top: 30, left: 40, right: 80, bottom: 70 };
 export default class MiniChart {
   constructor(element, width) {
     const vis = this;

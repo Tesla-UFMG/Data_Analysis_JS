@@ -41,6 +41,23 @@ function TabGeral() {
     }
   }, []);
 
+  useEffect(() => {
+    if (chartValues.data) {
+      chartValues.data.map((d) => {
+        d["timer"] = d["timer"] / 1000;
+        d["accelX"] = d["accelX"] / 1000;
+        d["accelY"] = d["accelY"] / 1000;
+        d["accelZ"] = d["accelZ"] / 1000;
+        d["Intensidade_Frenagem"] = d["Intensidade_Frenagem"] / 10;
+        d["Speed_LR"] = d["Speed_LR"] / 10;
+        d["Speed_RR"] = d["Speed_RR"] / 10;
+        d["Pedal"] = d["Pedal"] / 10;
+        d["Volante"] = (d["Volante"] - 1030) / 10;
+        return 0;
+      });
+    }
+  }, [chartValues.data]);
+
   function renderMiniChart() {
     return (
       <MiniWrapper

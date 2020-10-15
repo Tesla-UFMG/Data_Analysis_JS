@@ -26,6 +26,8 @@ function LapDivision() {
         lapFlag = 1;
       } else lapFlag = 0;
       contador = contador + 1;
+
+      return 0;
     });
     setDataLap(index);
   }, [chartValues.data]);

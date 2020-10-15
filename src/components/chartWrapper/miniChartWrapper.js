@@ -3,8 +3,6 @@ import { extent } from "d3";
 
 import MiniChart from "../chart/miniChart";
 
-import useHandleData from "../../hooks/useHandleData";
-
 function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
   const chartArea = useRef(null);
   const [minichart, setminiChart] = useState(null);
@@ -18,7 +16,7 @@ function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
   useEffect(() => {
     var windowWidth = window.innerWidth - 100;
     var vw = windowWidth / 100;
-    var graphWidth = windowWidth - 5 * vw;
+    var graphWidth = windowWidth - 8 * vw;
     const width = { Mini: graphWidth };
     if (!minichart) {
       setminiChart(new MiniChart(chartArea.current, width));

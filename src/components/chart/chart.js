@@ -5,7 +5,7 @@ const MARGIN = { top: 2, left: 40, right: 80, bottom: 1 };
 var windowWidth = window.innerWidth - 100;
 var vw = windowWidth / 100;
 
-var graphWidth = windowWidth - 5 * vw;
+var graphWidth = windowWidth - 8 * vw;
 
 const width = { Graph: graphWidth };
 const height = { Graph: 200 };
@@ -58,7 +58,7 @@ export default class D3Chart {
       .attr("class", "y")
       .attr("r", 2)
       .attr("stroke", "black");
-    vis.focus.append("text").attr("fill", "black");
+    vis.focus.append("text").attr("fill", "black").style("font-size", "10px");
     vis.focus
       .append("path")
       .attr("class", "y")
@@ -82,9 +82,16 @@ export default class D3Chart {
     vis.lineClip = vis.svg.append("g").attr("clip-path", "url(#clip)");
     vis.horizontalLines = vis.svg.append("g").attr("id", "horizontalLines");
     vis.horizontalLineCounter = 0;
+
+    vis.linearText = vis.svg
+      .append("g")
+
+      .append("text")
+      .attr("fill", "black")
+      .attr("class", "linearText");
   }
 
-  update(data, yAxis, s, newXdomain, handleVericalLine) {
+  update(data, yAxis, s, newXdomain, handleVericalLine, regression) {
     const vis = this;
     if (data) {
       vis.data = data;
@@ -93,6 +100,7 @@ export default class D3Chart {
       vis.data.map((d) => {
         vis.xData.push(d[0]);
         vis.yData.push(d[1]);
+        return 0;
       });
       const xDomain = d3.extent(vis.data.map((d) => d[0]));
       const yDomain = d3.extent(vis.data.map((d) => d[1]));
@@ -127,8 +135,8 @@ export default class D3Chart {
       //LINEGENERATOR
       const lineGenerator = d3
         .line()
-        .x((d) => vis.X(d[0]))
-        .y((d) => vis.Y(d[1]));
+        .x((d) => vis.X(d[0]).toFixed(2))
+        .y((d) => vis.Y(d[1]).toFixed(2));
 
       //JOIN()
       vis.lines = vis.lineClip.selectAll(`.line`).data([vis.data]);
@@ -147,6 +155,64 @@ export default class D3Chart {
 
       //UPDATE()
       vis.lines.transition().duration(1500).attr("d", lineGenerator);
+
+      if (regression) {
+        let xAvarage = 0,
+          yAvarage = 0,
+          x2 = 0,
+          y2 = 0,
+          xy = 0;
+        for (let i = 0; i < vis.xData.length; i++) {
+          xAvarage = xAvarage + vis.xData[i];
+          yAvarage = yAvarage + vis.yData[i];
+          xy = xy + vis.xData[i] * vis.yData[i];
+          y2 = y2 + vis.yData[i] * vis.yData[i];
+          x2 = x2 + vis.xData[i] * vis.xData[i];
+        }
+        let b =
+          (vis.xData.length * xy - xAvarage * yAvarage) /
+          (vis.xData.length * x2 - xAvarage * xAvarage);
+
+        yAvarage = yAvarage / vis.xData.length;
+        xAvarage = xAvarage / vis.xData.length;
+        let a = yAvarage - b * xAvarage;
+        let linearRegression = [];
+        linearRegression = vis.xData.map((d) => [d, a + b * d]);
+
+        const linearPlot = d3
+          .line()
+          .x((d) => vis.X(d[0]).toFixed(2))
+          .y((d) => vis.Y(d[1]).toFixed(2));
+
+        vis.linearLine = vis.lineClip
+          .selectAll(".linearLine")
+          .data([linearRegression]);
+
+        vis.linearLine
+          .enter()
+          .append("path")
+          .attr("class", "linearLine")
+          .attr("d", linearPlot(linearRegression))
+          .attr("fill", "none")
+          .attr("stroke", "red")
+          .attr("stroke-width", "2px");
+        vis.linearLine
+          .transition()
+          .duration(1000)
+          .attr("d", linearPlot(linearRegression))
+          .attr("fill", "none")
+          .attr("stroke", "red")
+          .attr("stroke-width", "2px");
+        vis.linearText
+          .style("display", "block")
+          .style("font-size", "1vh")
+          .attr("x", width.Graph)
+          .attr("y", 20)
+          .text(`y = ${b.toFixed(3)}x + ${a.toFixed(2)}`);
+      } else if (vis.linearLine) {
+        vis.lineClip.selectAll(".linearLine").remove();
+        vis.linearText.style("display", "none");
+      }
 
       //TOOLTIP
       vis.bigRect
@@ -182,9 +248,10 @@ export default class D3Chart {
         vis.horizontalLines
           .append("text")
           .attr("id", `text${vis.horizontalLineCounter}`)
+          .style("font-size", "10px")
           .attr("class", "text")
           .attr("y", toolTipY)
-          .text(`${coordenadaY}`)
+          .text(`${coordenadaY.toFixed(3)}`)
           .attr("x", width.Graph)
           .on("mousedown", function () {
             vis.horizontalLines.select(`#${this.id}`).remove();
@@ -208,7 +275,7 @@ export default class D3Chart {
     vis.focus
       .select("text")
       .attr("x", toolTipX)
-      .attr("y", toolTipY)
-      .text(`(${coordenadaX}, ${coordenadaY})`);
+      .attr("y", toolTipY + 10)
+      .text(`(${coordenadaX.toFixed(3)}, ${coordenadaY.toFixed(3)})`);
   }
 }

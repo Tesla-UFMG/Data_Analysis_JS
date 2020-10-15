@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { line } from "d3";
 
 const MARGIN = { top: 30, left: 50, right: 80, bottom: 30 };
 
@@ -82,6 +81,7 @@ export default class Overlap {
       max.push(d3.max(lapY[lap]));
       min.push(d3.min(lapY[lap]));
       timer.push(d3.max(lapX[lap]) - d3.min(lapX[lap]));
+      return 0;
     });
     const X = d3
       .scaleLinear()
@@ -122,6 +122,7 @@ export default class Overlap {
         .attr("r", 2)
         .attr("stroke", "black");
       vis.focus.append("text").attr("id", `text${lap}`).attr("fill", "black");
+      return 0;
     });
 
     vis.xLabel = d3.axisBottom(X);
@@ -159,6 +160,7 @@ export default class Overlap {
             .attr("y", toolTipY)
             .text(`(${xCoordenate}, ${yCoordenate})  VOLTA${lap}`);
         }
+        return 0;
       });
     }
     for (let i = 0; i < lapData.length; i++) {
