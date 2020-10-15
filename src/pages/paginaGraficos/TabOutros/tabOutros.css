@@ -64,8 +64,17 @@
   background-color: #3a9e2f;
 }
 
+<<<<<<< HEAD
 #tab-outros .chart {
   background-color: white;
   border-radius: 10px;
   padding: 10px;
 }
+=======
+#tab-outros .chart,
+#tab-outros .overlap-chart-area {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+>>>>>>> feab0fdd1689f6f837bdbee0eb5444e551edb1b8

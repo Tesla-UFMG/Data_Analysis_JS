@@ -16,11 +16,15 @@ function TabOutros() {
     if (channelOption[0]) {
       switch (channelOption[0].column) {
         case "Sobreposiçao de Voltas":
+<<<<<<< HEAD
           return <LapDivision></LapDivision>;
         case "yaw acceleration":
           return <YawAcceleration></YawAcceleration>;
         default:
           break;
+=======
+          return <LapDivision />;
+>>>>>>> feab0fdd1689f6f837bdbee0eb5444e551edb1b8
       }
     }
   };
