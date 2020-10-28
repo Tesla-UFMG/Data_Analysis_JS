@@ -1,17 +1,13 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 2, left: 40, right: 0, bottom: 1 };
+const MARGIN = { top: 2, left: 40, right: 80, bottom: 1 };
 
-var windowWidth = window.innerWidth - 200;
-// var vw = windowWidth / 100;
+var windowWidth = window.innerWidth - 100;
+var vw = windowWidth / 100;
 
-<<<<<<< HEAD
 var graphWidth = windowWidth - 8 * vw;
-=======
-// var graphWidth = windowWidth - (8 * vw);
->>>>>>> feab0fdd1689f6f837bdbee0eb5444e551edb1b8
 
-const width = { Graph: windowWidth };
+const width = { Graph: graphWidth };
 const height = { Graph: 200 };
 
 export default class D3Chart {
@@ -267,6 +263,7 @@ export default class D3Chart {
     }
   }
   verticalLine(vertical) {
+    
     const vis = this;
     const coordenadaX = vis.xData[vertical];
     const coordenadaY = vis.yData[vertical];

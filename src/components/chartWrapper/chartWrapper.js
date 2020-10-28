@@ -21,7 +21,6 @@ const ChartWrapper = ({
   const handleVerticalLine = (Xcoordinate) => {
     handleVertical(Xcoordinate);
   };
-
   useEffect(() => {
     if (!chart) {
       setChart(new D3Chart(chartArea.current));
@@ -139,7 +138,7 @@ const ChartWrapper = ({
     regression,
   ]);
   useEffect(() => {
-    if (!chart);
+    if (!chart || !vertical);
     else {
       chart.verticalLine(vertical);
     }

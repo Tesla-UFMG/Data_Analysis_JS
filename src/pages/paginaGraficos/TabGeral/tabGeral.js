@@ -5,12 +5,10 @@ import { tsv } from "d3";
 import { FileContext } from "../../../context/fileContext";
 import { ChartContext } from "../../../context/chartContext";
 
-import ChartWrapper from "../../../components/chartWrapper/chartWrapper";
+
+import Data from "./components/graficos/data"
 import ConfigRow from "./components/configRow/configRow";
 import Dropdown from "./components/dropdown/dropdown";
-import MiniWrapper from "../../../components/chartWrapper/miniChartWrapper";
-import Xlabelwrapper from "../../../components/chartWrapper/xlabelwrapper";
-
 import "./tabGeral.css";
 
 function TabGeral() {
@@ -19,13 +17,9 @@ function TabGeral() {
   const [selectFile] = useContext(FileContext);
   const chartValues = useContext(ChartContext);
 
-  const [submit, setSubmit] = useState(false);
   const [filterN, setFilterN] = useState(1);
   const [avarageCheck, setAvarageCheck] = useState(false);
   const [medianCheck, setMedianCheck] = useState(false);
-  const [s, setS] = useState(0);
-  const [newXdomain, setNewXdomain] = useState(0);
-  const [vertical, setVertical] = useState(0);
 
   useEffect(() => {
     const fileName = selectFile.map((file) => {
@@ -40,65 +34,19 @@ function TabGeral() {
       history.push("/");
     }
   }, []);
-
-  useEffect(() => {
-    if (chartValues.data) {
-      chartValues.data.map((d) => {
-        d["timer"] = d["timer"] / 1000;
-        d["accelX"] = d["accelX"] / 1000;
-        d["accelY"] = d["accelY"] / 1000;
-        d["accelZ"] = d["accelZ"] / 1000;
-        d["Intensidade_Frenagem"] = d["Intensidade_Frenagem"] / 10;
-        d["Speed_LR"] = d["Speed_LR"] / 10;
-        d["Speed_RR"] = d["Speed_RR"] / 10;
-        d["Pedal"] = d["Pedal"] / 10;
-        d["Volante"] = (d["Volante"] - 1030) / 10;
-        return 0;
-      });
-    }
-  }, [chartValues.data]);
-
-  function renderMiniChart() {
-    return (
-      <MiniWrapper
-        data={chartValues.data}
-        xAxis={chartValues.axisX.value}
-        handleS={(sRecived) => setS(sRecived)}
-        handleNewX={(xRecived) => setNewXdomain(xRecived)}
-      />
-    );
-  }
-  const handleVertical = (verticalRecive) => {
-    setVertical(verticalRecive);
-  };
-
-  function renderChart() {
-    return chartValues.axisY.map((axis) => {
-      return (
-        <ChartWrapper
-          key={axis.column}
-          data={chartValues.data}
-          xAxis={chartValues.axisX.value}
-          yAxis={axis.column}
-          filterN={filterN}
+  const renderChart = ()=>{
+    if(chartValues.axisY[0]){
+      return(
+      <Data filterN={filterN}
           avarageCheck={avarageCheck}
-          medianCheck={medianCheck}
-          s={s}
-          newXdomain={newXdomain}
-          handleVertical={handleVertical}
-          vertical={vertical}
-        />
-      );
-    });
+          medianCheck={medianCheck}></Data>)
+    }
+    else return
   }
-  function renderXLabel() {
-    return <Xlabelwrapper newXdomain={newXdomain}></Xlabelwrapper>;
-  }
-
   return (
     <div id="tab-geral">
       <h1 className="tab-title">Opções de Plotagem</h1>
-
+      
       <form>
         <Dropdown
           data={chartValues.data}
@@ -118,25 +66,13 @@ function TabGeral() {
         />
       </form>
 
+      
       <ConfigRow
         filterN={(number) => setFilterN(number)}
         avarage={(value) => setAvarageCheck(value)}
         median={(value) => setMedianCheck(value)}
       />
-
-      <div className="row">
-        <button
-          type="button"
-          className="btn plot-button"
-          onClick={() => setSubmit(true)}
-        >
-          Plotar
-        </button>
-      </div>
-
-      <div>{submit && renderMiniChart()}</div>
-      <div className="chart">{submit && renderChart()}</div>
-      <div className="xlabelarea">{submit && renderXLabel()}</div>
+      {renderChart()}
     </div>
   );
 }

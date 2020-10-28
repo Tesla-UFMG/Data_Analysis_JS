@@ -45,9 +45,11 @@ function YawWrapper({ dataX, dataY }) {
   }, [dataX, dataY, accelChart]);
   useEffect(() => {
     if (!pp) {
-      setPP(new PlayPause(playPause.current));
+      setPP(new PlayPause(playPause.current));      
+    } else if(dataX){
+      pp.update(dataX)
     }
-  }, [pp]);
+  }, [pp,dataX]);
 
   return (
     <div>

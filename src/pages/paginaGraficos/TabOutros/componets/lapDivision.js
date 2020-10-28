@@ -76,13 +76,16 @@ function LapDivision() {
                       </div>
                     );
                   }
+                  else return 0;
                 })}
               </div>
             );
           }
+          else return 0;
         })
       );
     }
+    else return 0;
   };
 
   const renderOverLapChart = () => {
