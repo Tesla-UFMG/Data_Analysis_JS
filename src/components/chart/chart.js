@@ -91,7 +91,7 @@ export default class D3Chart {
       .attr("class", "linearText");
   }
 
-  update(data, yAxis, s, newXdomain, handleVericalLine, regression) {
+  update(data, yAxis, s, newXdomain, handleVericalLine, regression,colors) {
     const vis = this;
     if (data) {
       vis.data = data;
@@ -147,7 +147,7 @@ export default class D3Chart {
         .attr("class", `line`)
         .attr("d", lineGenerator(vis.data))
         .attr("fill", "none")
-        .attr("stroke", "#003cff")
+        .attr("stroke", ()=>colors?`#${colors}`:"#003cff")
         .attr("stroke-width", "0.5px");
 
       //EXIT()
@@ -267,16 +267,20 @@ export default class D3Chart {
     const vis = this;
     const coordenadaX = vis.xData[vertical];
     const coordenadaY = vis.yData[vertical];
-    const toolTipX = vis.X(coordenadaX);
+    if(coordenadaY && coordenadaX || (coordenadaX === 0 || coordenadaY === 0)){
+      const toolTipX = vis.X(coordenadaX);
     const toolTipY = vis.Y(coordenadaY);
     vis.focus
       .select("circle.y")
       .attr("transform", `translate(${toolTipX}, ${toolTipY})`);
     vis.focus.select("path.y").attr("transform", `translate(${toolTipX},0)`);
+    
     vis.focus
       .select("text")
       .attr("x", toolTipX)
       .attr("y", toolTipY + 10)
       .text(`(${coordenadaX.toFixed(3)}, ${coordenadaY.toFixed(3)})`);
+    }
+    
   }
 }

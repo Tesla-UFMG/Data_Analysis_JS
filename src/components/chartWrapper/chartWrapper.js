@@ -1,30 +1,33 @@
-import React, { useRef, useState, useEffect } from "react";
-
+import React, { useRef, useState, useEffect, useContext } from "react";
+import {extent} from "d3"
+import {tableContext} from "../../context/tableContext"
 import D3Chart from "../chart/chart";
+import { ChartContext } from "../../context/chartContext";
 const ChartWrapper = ({
   data,
-  yAxis,
-  xAxis,
   filterN,
   medianCheck,
   avarageCheck,
   s,
   newXdomain,
   handleVertical,
-  vertical,
+  vertical,yAxis
 }) => {
+  const {saveRange,reRender} = useContext(tableContext)
+  const {axisX,colors} = useContext(ChartContext)
+  const xAxis = axisX.value
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
   const [integral, setIntegral] = useState(null);
   const [derivate, setDerivate] = useState(null);
   const [regression, setRegression] = useState(null);
+  const [realData, setRealdata] = useState(null)
   const handleVerticalLine = (Xcoordinate) => {
     handleVertical(Xcoordinate);
   };
-  useEffect(() => {
-    if (!chart) {
-      setChart(new D3Chart(chartArea.current));
-    } else if (data) {
+  
+  useEffect(()=>{
+    if (data) {
       let yData = [];
       let xData = [];
       let processData = data.map((d) => {
@@ -109,40 +112,45 @@ const ChartWrapper = ({
             processData[i][1] = mean;
           }
         }
-
-        chart.update(
-          processData,
-          yAxis,
-          s,
-          newXdomain,
-          handleVerticalLine,
-          regression
-        );
-      } else {
-        let processData = null;
-        chart.update(processData, yAxis, s, newXdomain);
       }
+      setRealdata(processData)
     }
-  }, [
+
+  },[data,integral,derivate,filterN,avarageCheck,medianCheck, yAxis,xAxis])
+  useEffect(() => {
+    if (!chart) {
+      setChart(new D3Chart(chartArea.current));
+    }        
+   else if(realData && newXdomain){
+    const aux = realData.filter(d=>{
+      return d[0]>newXdomain[0]&&d[0]<newXdomain[1]
+    })
+    saveRange(yAxis,extent(aux.map(d => d[1]))); 
+    reRender()
+      chart.update(
+      realData,
+      yAxis,
+      s,
+      newXdomain,
+      handleVerticalLine,
+      regression,colors[yAxis]
+  )
+  }
+  },[
     chart,
-    data,
     yAxis,
-    xAxis,
-    filterN,
-    medianCheck,
-    avarageCheck,
     s,
     newXdomain,
-    integral,
-    derivate,
     regression,
-  ]);
+    realData
+  ])
   useEffect(() => {
     if (!chart || !vertical);
     else {
       chart.verticalLine(vertical);
     }
   }, [chart, vertical]);
+  
   const handleIntegral = () => {
     const iChecked = document.getElementById(`check-integral-${yAxis}`).checked;
     setIntegral(iChecked);
@@ -161,7 +169,8 @@ const ChartWrapper = ({
     setRegression(iChecked);
   };
   return (
-    <div className="full-chart-area" style={{ display: "flex" }}>
+    
+      <div className="full-chart-area" style={{ display: "flex" }}>
       <div className="chart-area" ref={chartArea}></div>
       <div className="integration-derivation">
         <input
@@ -196,6 +205,8 @@ const ChartWrapper = ({
         </label>
       </div>
     </div>
+    
+    
   );
 };
 

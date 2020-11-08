@@ -1,21 +1,42 @@
-import React, {useEffect, useState} from 'react'
-import * as d3 from "d3"
-function Table({ data,
-    yAxis,
-    xAxis,
-    filterN,
-    medianCheck,
-    avarageCheck,
-    s,
-    newXdomain}) {
-        const [max,setMax] = useState(0)
-       useEffect(()=>{
-            //console.log(d3.max(data.map(d=> d[yAxis])))
+import React, {useContext, useEffect, useState} from 'react'
+import { ChartContext } from '../../context/chartContext';
+import { tableContext } from '../../context/tableContext'
+import TableValues from "./tableValues"
 
-       },[data])
+
+function Table() {
+    
+    const {range,force} = useContext(tableContext)
+    const [extent, setExtent]= useState(range)
+    const chartValues = useContext(ChartContext);
+    const Y = chartValues.axisY.map(y=>y.column)
+    
+    useEffect(()=>{
+        const filtered = Object.keys(range)
+        .filter(key => Y.includes(key))
+        .reduce((obj, key) => {
+            obj[key] = range[key];
+            return obj;
+        }, {});
+        setExtent(filtered)
+    },[force])
+
 
     return (
-        <div id = {"table"}>{max}
+        <div id = {"table"}>            
+            <table>
+                    <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>min</th>
+                        <th>max</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                       <TableValues Y = {chartValues.axisY} range = {extent}></TableValues>
+                    </tbody>
+            </table>
+            
         </div>
     )
 }

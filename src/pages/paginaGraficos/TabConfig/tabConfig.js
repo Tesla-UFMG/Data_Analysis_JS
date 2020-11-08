@@ -45,7 +45,7 @@ function TabConfig() {
             <div className="color-graficos">
                 {chartValues.axisY.map(axis => {
                     return (
-                        <div>
+                        <div key ={axis}>
                             <label className="label-color" htmlFor={"input-" + axis.column}>
                                 {axis.column}:
                             </label>

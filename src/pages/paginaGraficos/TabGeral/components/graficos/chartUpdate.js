@@ -1,26 +1,24 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import ChartWrapper from "../../../../../components/chartWrapper/chartWrapper"
+import { ChartContext } from '../../../../../context/chartContext';
 function ChartUpdate({data,
-    yAxis,
-    xAxis,
     filterN,
     medianCheck,
     avarageCheck,
     s,
     newXdomain}) {
+    const {axisY} = useContext(ChartContext)
     const [vertical, setVertical] = useState(0);
     const handleVertical = (verticalRecive) => {
         setVertical(verticalRecive);
-      };
+    };
       
       function renderChart() {
-        return yAxis.map((axis) => {
+        return axisY.map((axis) => {
           return (
             <ChartWrapper
               key={axis.column}
               data={data}
-              xAxis={xAxis}
-              yAxis={axis.column}
               filterN={filterN}
               avarageCheck={avarageCheck}
               medianCheck={medianCheck}
@@ -28,6 +26,7 @@ function ChartUpdate({data,
               newXdomain={newXdomain}
               handleVertical={handleVertical}
               vertical={vertical}
+              yAxis = {axis.column}
             />
           );
         });
