@@ -14,7 +14,7 @@ function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
     handleNewX(xRecived);
   };
   useEffect(() => {
-    var windowWidth = window.innerWidth - 100;
+    var windowWidth = window.innerWidth - 170;
     var vw = windowWidth / 100;
     var graphWidth = windowWidth - 8 * vw;
     const width = { Mini: graphWidth };

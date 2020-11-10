@@ -12,6 +12,7 @@ function TabConfig() {
         auxValues[event.target.name] = event.target.value;
         chartValues.setColors(auxValues);
     }
+   
 
     return (
         <div id="tab-config">
@@ -45,7 +46,7 @@ function TabConfig() {
             <div className="color-graficos">
                 {chartValues.axisY.map(axis => {
                     return (
-                        <div key ={axis}>
+                        <div key ={axis.column}>
                             <label className="label-color" htmlFor={"input-" + axis.column}>
                                 {axis.column}:
                             </label>
@@ -68,7 +69,7 @@ function TabConfig() {
                         className="input-size"
                         name="input-size"
                         id="radio-type-line"
-                        value="200px"
+                        onClick = {()=>chartValues.setSize(200)}
                     />
                     <label className="label-type" htmlFor="radio-type-line">
                         200px
@@ -79,7 +80,7 @@ function TabConfig() {
                         className="input-size"
                         name="input-size"
                         id="radio-type-bar"
-                        value="400px"
+                        onClick = {()=>chartValues.setSize(400)}
                     />
                     <label className="label-type" htmlFor="radio-type-bar">
                         400px

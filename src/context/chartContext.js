@@ -8,6 +8,7 @@ export const ChartProvider = (props) => {
     const [axisY, setAxisY] = useState([]);
     const [axisX, setAxisX] = useState({ value: "timer", label: "Timer" });
     const [colors, setColors] = useState("#003cff");
+    const [size,setSize] = useState(200)
     const [data, setData] = useState([]);
 
     const chartValues = useMemo(() => ({
@@ -15,7 +16,8 @@ export const ChartProvider = (props) => {
         axisY, setAxisY,
         axisX, setAxisX,
         colors, setColors,
-    }), [axisY, axisX, colors, data]);
+        size, setSize
+    }), [axisY, axisX, colors, data,size]);
 
     return(
         <Provider value={chartValues}>

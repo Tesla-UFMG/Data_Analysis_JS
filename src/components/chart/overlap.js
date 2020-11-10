@@ -139,7 +139,8 @@ export default class Overlap {
       .on("mousemove", mousemove);
     function mousemove() {
       const x0 = X.invert(d3.mouse(this)[0]);
-      vis.focus.select("path.y").attr("transform", `translate(${X(x0)},0)`);
+      if(x0) vis.focus.select("path.y").attr("transform", `translate(${X(x0)},0)`);
+     
       lapSelect.map((lap) => {
         const lapstart = lapX[lap][0];
         const realX = lapstart + x0;
@@ -150,7 +151,7 @@ export default class Overlap {
 
         const toolTipX = X(xCoordenate - lapstart);
         const toolTipY = Y(yCoordenate);
-        if (toolTipX) {
+        if (toolTipX||toolTipY) {
           vis.focus
             .select(`#circle${lap}`)
             .attr("transform", `translate(${toolTipX}, ${toolTipY})`);

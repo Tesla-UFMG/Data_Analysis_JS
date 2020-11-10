@@ -2,7 +2,7 @@ import * as d3 from "d3";
 const height = { Mini: 0 };
 const MARGIN = { top: 0, left: 40, right: 80, bottom: 25 };
 
-var windowWidth = window.innerWidth - 100;
+var windowWidth = window.innerWidth - 170;
 var vw = windowWidth / 100;
 
 var graphWidth = windowWidth - 8 * vw;

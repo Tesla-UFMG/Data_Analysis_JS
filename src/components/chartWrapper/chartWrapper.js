@@ -13,8 +13,8 @@ const ChartWrapper = ({
   handleVertical,
   vertical,yAxis
 }) => {
-  const {saveRange,reRender} = useContext(tableContext)
-  const {axisX,colors} = useContext(ChartContext)
+  const {saveRange,reRender,saveLR} = useContext(tableContext)
+  const {axisX,colors,size} = useContext(ChartContext)
   const xAxis = axisX.value
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
@@ -119,7 +119,7 @@ const ChartWrapper = ({
   },[data,integral,derivate,filterN,avarageCheck,medianCheck, yAxis,xAxis])
   useEffect(() => {
     if (!chart) {
-      setChart(new D3Chart(chartArea.current));
+      setChart(new D3Chart(chartArea.current,size));
     }        
    else if(realData && newXdomain){
     const aux = realData.filter(d=>{
@@ -133,8 +133,9 @@ const ChartWrapper = ({
       s,
       newXdomain,
       handleVerticalLine,
-      regression,colors[yAxis]
+      regression,colors[yAxis],handleLinearText
   )
+  
   }
   },[
     chart,
@@ -168,41 +169,53 @@ const ChartWrapper = ({
       .checked;
     setRegression(iChecked);
   };
+  const handleLinearText = (text)=>{
+    saveLR(yAxis,text)
+  }
+
+  
   return (
     
       <div className="full-chart-area" style={{ display: "flex" }}>
       <div className="chart-area" ref={chartArea}></div>
       <div className="integration-derivation">
-        <input
-          className="checkbox"
-          type="checkbox"
-          value="integral"
-          id={`check-integral-${yAxis}`}
-          onChange={handleIntegral}
-        />
-        <label className="checkbox" htmlFor={`check-integral-${yAxis}`}>
-          integrar
-        </label>
-        <input
-          className="checkbox"
-          type="checkbox"
-          value="derivate"
-          id={`check-derivate-${yAxis}`}
-          onChange={handleDerivate}
-        />
-        <label className="checkbox" htmlFor={`check-derivate-${yAxis}`}>
-          derivar
-        </label>
-        <input
-          className="checkbox"
-          type="checkbox"
-          value="regression"
-          id={`check-regression-${yAxis}`}
-          onChange={handleRegression}
-        />
-        <label className="checkbox" htmlFor={`check-regression-${yAxis}`}>
-          regressao linear
-        </label>
+        <div>
+          <input
+            className="checkbox"
+            type="checkbox"
+            value="integral"
+            id={`check-integral-${yAxis}`}
+            onChange={handleIntegral}
+          />
+          <label className="checkbox" htmlFor={`check-integral-${yAxis}`}>
+            I
+          </label>
+        </div>
+        <div>
+          <input
+            className="checkbox"
+            type="checkbox"
+            value="derivate"
+            id={`check-derivate-${yAxis}`}
+            onChange={handleDerivate}
+          />
+          <label className="checkbox" htmlFor={`check-derivate-${yAxis}`}>
+            D
+          </label>
+        </div>
+        <div>
+          <input
+            className="checkbox"
+            type="checkbox"
+            value="regression"
+            id={`check-regression-${yAxis}`}
+            onChange={handleRegression}
+          />
+          <label className="checkbox" htmlFor={`check-regression-${yAxis}`}>
+            R L
+          </label>
+        </div>
+        
       </div>
     </div>
     

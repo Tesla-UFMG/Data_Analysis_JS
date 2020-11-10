@@ -2,31 +2,30 @@ import * as d3 from "d3";
 
 const MARGIN = { top: 2, left: 40, right: 80, bottom: 1 };
 
-var windowWidth = window.innerWidth - 100;
+var windowWidth = window.innerWidth - 170;
 var vw = windowWidth / 100;
 
 var graphWidth = windowWidth - 8 * vw;
 
 const width = { Graph: graphWidth };
-const height = { Graph: 200 };
 
 export default class D3Chart {
-  constructor(element) {
+  constructor(element,size) {
     const vis = this;
-
+    vis.size = size
     //Criando o svg
     vis.svg = d3
       .select(element)
       .append("svg")
       .attr("width", width.Graph + MARGIN.left + MARGIN.right)
-      .attr("height", height.Graph + MARGIN.top + MARGIN.bottom)
+      .attr("height", vis.size + MARGIN.top + MARGIN.bottom)
       .attr("class", "graph-svg")
       .append("g")
       .attr("transform", `translate(${MARGIN.left}, ${MARGIN.top})`);
 
     //Estabelecendo o RANGE
     vis.X = d3.scaleLinear().range([0, width.Graph]);
-    vis.Y = d3.scaleLinear().range([0, height.Graph]);
+    vis.Y = d3.scaleLinear().range([0, vis.size]);
 
     //Separando as LABELS
     vis.yLabelGroup = vis.svg
@@ -47,7 +46,7 @@ export default class D3Chart {
       .attr("id", "clip")
       .append("SVG:rect")
       .attr("width", width.Graph)
-      .attr("height", height.Graph)
+      .attr("height", vis.size)
       .attr("x", 0)
       .attr("y", 0);
 
@@ -68,14 +67,14 @@ export default class D3Chart {
       .attr(
         "d",
         d3.line()([
-          [0, height.Graph],
+          [0, vis.size],
           [0, 0],
         ])
       );
     vis.bigRect = vis.svg
       .append("rect")
       .attr("width", width.Graph)
-      .attr("height", height.Graph)
+      .attr("height", vis.size)
       .style("fill", "none")
       .style("pointer-events", "all");
 
@@ -91,7 +90,7 @@ export default class D3Chart {
       .attr("class", "linearText");
   }
 
-  update(data, yAxis, s, newXdomain, handleVericalLine, regression,colors) {
+  update(data, yAxis, s, newXdomain, handleVericalLine, regression,colors,handleLinearText) {
     const vis = this;
     if (data) {
       vis.data = data;
@@ -118,11 +117,11 @@ export default class D3Chart {
         .scaleExtent([1, Infinity])
         .translateExtent([
           [0, 0],
-          [width.Graph, height.Graph],
+          [width.Graph, vis.size],
         ])
         .extent([
           [0, 0],
-          [width.Graph, height.Graph],
+          [width.Graph, vis.size],
         ]);
       if (newXdomain && s) {
         vis.X.domain(newXdomain);
@@ -178,7 +177,7 @@ export default class D3Chart {
         let a = yAvarage - b * xAvarage;
         let linearRegression = [];
         linearRegression = vis.xData.map((d) => [d, a + b * d]);
-
+        const linearText =`y = ${b.toFixed(3)}x + ${a.toFixed(2)}`
         const linearPlot = d3
           .line()
           .x((d) => vis.X(d[0]).toFixed(2))
@@ -208,7 +207,8 @@ export default class D3Chart {
           .style("font-size", "1vh")
           .attr("x", width.Graph)
           .attr("y", 20)
-          .text(`y = ${b.toFixed(3)}x + ${a.toFixed(2)}`);
+          .text(linearText);
+          handleLinearText(linearText)
       } else if (vis.linearLine) {
         vis.lineClip.selectAll(".linearLine").remove();
         vis.linearText.style("display", "none");
@@ -245,7 +245,9 @@ export default class D3Chart {
           .attr("stroke-width", 2)
           .attr("opacity", 0.6)
           .attr("id", `line${vis.horizontalLineCounter}`);
-        vis.horizontalLines
+        
+        if(toolTipY>=190){
+          vis.horizontalLines
           .append("text")
           .attr("id", `text${vis.horizontalLineCounter}`)
           .style("font-size", "10px")
@@ -258,6 +260,21 @@ export default class D3Chart {
             const auxLine = this.id.replace("text", "line");
             vis.horizontalLines.select(`#${auxLine}`).remove();
           });
+          
+        }
+        else vis.horizontalLines
+        .append("text")
+        .attr("id", `text${vis.horizontalLineCounter}`)
+        .style("font-size", "10px")
+        .attr("class", "text")
+        .attr("y", toolTipY+10)
+        .text(`${coordenadaY.toFixed(3)}`)
+        .attr("x", width.Graph)
+        .on("mousedown", function () {
+          vis.horizontalLines.select(`#${this.id}`).remove();
+          const auxLine = this.id.replace("text", "line");
+          vis.horizontalLines.select(`#${auxLine}`).remove();
+        });
         vis.horizontalLineCounter++;
       }
     }
@@ -267,19 +284,25 @@ export default class D3Chart {
     const vis = this;
     const coordenadaX = vis.xData[vertical];
     const coordenadaY = vis.yData[vertical];
-    if(coordenadaY && coordenadaX || (coordenadaX === 0 || coordenadaY === 0)){
+    if((coordenadaY && coordenadaX) || (coordenadaX === 0 || coordenadaY === 0)){
       const toolTipX = vis.X(coordenadaX);
-    const toolTipY = vis.Y(coordenadaY);
-    vis.focus
-      .select("circle.y")
-      .attr("transform", `translate(${toolTipX}, ${toolTipY})`);
-    vis.focus.select("path.y").attr("transform", `translate(${toolTipX},0)`);
-    
-    vis.focus
-      .select("text")
-      .attr("x", toolTipX)
-      .attr("y", toolTipY + 10)
-      .text(`(${coordenadaX.toFixed(3)}, ${coordenadaY.toFixed(3)})`);
+      const toolTipY = vis.Y(coordenadaY);
+      vis.focus
+        .select("circle.y")
+        .attr("transform", `translate(${toolTipX}, ${toolTipY})`);
+      vis.focus.select("path.y").attr("transform", `translate(${toolTipX},0)`);
+      if(toolTipY>=190){
+        vis.focus
+        .select("text")
+        .attr("x", toolTipX)
+        .attr("y", toolTipY - 10)
+        .text(`(${coordenadaX.toFixed(3)}, ${coordenadaY.toFixed(3)})`);
+      }
+      else vis.focus
+        .select("text")
+        .attr("x", toolTipX)
+        .attr("y", toolTipY + 10)
+        .text(`(${coordenadaX.toFixed(3)}, ${coordenadaY.toFixed(3)})`);
     }
     
   }
