@@ -3,10 +3,10 @@ import React, { useContext } from 'react';
 import './tabConfig.css'
 
 import { ChartContext } from "../../../context/chartContext";
-
+import { FileContext } from "../../../context/fileContext";
 function TabConfig() {
     const chartValues = useContext(ChartContext);
-
+    const [selectFile] = useContext(FileContext);
     function handleChangeColor(event) {
         const auxValues = { ...chartValues.colors };
         auxValues[event.target.name] = event.target.value;
@@ -44,22 +44,27 @@ function TabConfig() {
 
             <h1 className="tab-title">Cor das linhas:</h1>
             <div className="color-graficos">
-                {chartValues.axisY.map(axis => {
-                    return (
-                        <div key ={axis.column}>
-                            <label className="label-color" htmlFor={"input-" + axis.column}>
-                                {axis.column}:
-                            </label>
-                            <input type="text"
-                                className="input-color"
-                                name={axis.column}
-                                id={"input-" + axis.column}
-                                placeholder="Código da sua cor aqui"
-                                onChange={e => handleChangeColor(e)}
-                            />
-                        </div>
-                    );
-                })}
+            
+                {
+                selectFile.map((file) => {
+                    return chartValues.axisY[file.label].map(axis => {
+                        return (
+                            <div key ={`${axis.column}${file.label}`}>
+                                <label className="label-color" htmlFor={"input-" + axis.column}>
+                                    {axis.column}:
+                                </label>
+                                <input type="text"
+                                    className="input-color"
+                                    name={axis.column}
+                                    id={"input-" + axis.column}
+                                    placeholder="Código da sua cor aqui"
+                                    onChange={e => handleChangeColor(e)}
+                                />
+                            </div>
+                        );
+                    })}
+                )}
+                
             </div>
 
             <h1 className="tab-title">Tamanho do gráfico:</h1>

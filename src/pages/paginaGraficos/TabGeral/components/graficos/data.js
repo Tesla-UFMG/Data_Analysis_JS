@@ -14,12 +14,12 @@ function Data({data,filterN,avarageCheck,medianCheck}) {
       if(chartValues){
         return(<div>
           <TableProvider>
-              <MiniWrapper
+              {<MiniWrapper
                 data={data}
                 xAxis={chartValues.axisX.value}
                 handleS={(sRecived) => setS(sRecived)}
                 handleNewX={(xRecived) => setNewXdomain(xRecived)}
-              />
+              />}
             <ChartUpdate
               data={data}
               filterN={filterN}
@@ -29,7 +29,6 @@ function Data({data,filterN,avarageCheck,medianCheck}) {
               newXdomain={newXdomain}
               ></ChartUpdate>
               <Xlabelwrapper newXdomain={newXdomain}></Xlabelwrapper>
-              <Table></Table>
           </TableProvider>
         </div>)
       }

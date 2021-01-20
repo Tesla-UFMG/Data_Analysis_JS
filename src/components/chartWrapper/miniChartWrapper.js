@@ -5,8 +5,18 @@ import MiniChart from "../chart/miniChart";
 
 function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
   const chartArea = useRef(null);
+  const [arquivo, setArquivo] = useState(null);
   const [minichart, setminiChart] = useState(null);
-
+  useEffect(() => {
+    let comp = { tamanho: 0, file: null };
+    for (let a in data) {
+      if (data[a].length > comp.tamanho) {
+        comp.tamanho = data[a].length;
+        comp.file = a;
+      }
+    }
+    setArquivo(comp.file);
+  }, [data]);
   const hS = (sRecived) => {
     handleS(sRecived);
   };
@@ -26,12 +36,11 @@ function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
   }, [minichart]);
 
   useEffect(() => {
-    if (minichart) {
-      const xDomain = extent(data.map((d) => +d[xAxis]));
+    if (minichart && arquivo) {
+      const xDomain = extent(data[arquivo].map((d) => +d[xAxis]));
       const lapLocation = [];
       let lapFlag = 0;
-
-      data.map((d, i) => {
+      data[arquivo].map((d) => {
         if (d.beacon === "1" && lapFlag === 0) {
           lapLocation.push(d[xAxis]);
           return (lapFlag = 1);
@@ -40,7 +49,6 @@ function MiniWrapper({ data, xAxis, handleS, handleNewX }) {
         }
         return lapFlag;
       });
-
       minichart.update(xDomain, lapLocation, hX, hS);
     }
   }, [minichart, data, xAxis]);

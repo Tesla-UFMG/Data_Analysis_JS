@@ -61,11 +61,9 @@ function PaginaInicial() {
   }
 
   function postSelectedFiles() {
-    if (selectFile.length === 1 || selectFile.length === 2) {
+    if (selectFile.length) {
       history.push("/graficos");
-    } else if (selectFile.length > 2) {
-      alert("Por favor selecione no máximo dois arquivos");
-    } else {
+    }else {
       alert("Por favor selecione um arquivo primeiro");
     }
   }

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import {extent} from "d3"
-import {tableContext} from "../../context/tableContext"
+import { extent } from "d3";
+import { tableContext } from "../../context/tableContext";
 import D3Chart from "../chart/chart";
 import { ChartContext } from "../../context/chartContext";
 const ChartWrapper = ({
@@ -11,22 +11,24 @@ const ChartWrapper = ({
   s,
   newXdomain,
   handleVertical,
-  vertical,yAxis
+  vertical,
+  yAxis,
+  file,
 }) => {
-  const {saveRange,reRender,saveLR} = useContext(tableContext)
-  const {axisX,colors,size} = useContext(ChartContext)
-  const xAxis = axisX.value
+  const { saveRange, reRender, saveLR } = useContext(tableContext);
+  const { axisX, colors, size } = useContext(ChartContext);
+  const xAxis = axisX.value;
   const chartArea = useRef(null);
   const [chart, setChart] = useState(null);
   const [integral, setIntegral] = useState(null);
   const [derivate, setDerivate] = useState(null);
   const [regression, setRegression] = useState(null);
-  const [realData, setRealdata] = useState(null)
+  const [realData, setRealdata] = useState(null);
   const handleVerticalLine = (Xcoordinate) => {
     handleVertical(Xcoordinate);
   };
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     if (data) {
       let yData = [];
       let xData = [];
@@ -113,70 +115,69 @@ const ChartWrapper = ({
           }
         }
       }
-      setRealdata(processData)
+      setRealdata(processData);
     }
-
-  },[data,integral,derivate,filterN,avarageCheck,medianCheck, yAxis,xAxis])
+  }, [
+    data,
+    integral,
+    derivate,
+    filterN,
+    avarageCheck,
+    medianCheck,
+    yAxis,
+    xAxis,
+  ]);
   useEffect(() => {
     if (!chart) {
-      setChart(new D3Chart(chartArea.current,size));
-    }        
-   else if(realData && newXdomain){
-    const aux = realData.filter(d=>{
-      return d[0]>newXdomain[0]&&d[0]<newXdomain[1]
-    })
-    saveRange(yAxis,extent(aux.map(d => d[1]))); 
-    reRender()
+      setChart(new D3Chart(chartArea.current, size));
+    } else if (realData && newXdomain) {
+      const aux = realData.filter((d) => {
+        return d[0] > newXdomain[0] && d[0] < newXdomain[1];
+      });
+      saveRange(yAxis, extent(aux.map((d) => d[1])));
+      reRender();
       chart.update(
-      realData,
-      yAxis,
-      s,
-      newXdomain,
-      handleVerticalLine,
-      regression,colors[yAxis],handleLinearText
-  )
-  
-  }
-  },[
-    chart,
-    yAxis,
-    s,
-    newXdomain,
-    regression,
-    realData
-  ])
+        realData,
+        yAxis,
+        s,
+        newXdomain,
+        handleVerticalLine,
+        regression,
+        colors[yAxis],
+        handleLinearText
+      );
+    }
+  }, [chart, yAxis, s, newXdomain, regression, realData]);
   useEffect(() => {
     if (!chart || !vertical);
     else {
       chart.verticalLine(vertical);
     }
   }, [chart, vertical]);
-  
+
   const handleIntegral = () => {
-    const iChecked = document.getElementById(`check-integral-${yAxis}`).checked;
+    const iChecked = document.getElementById(`check-integral-${yAxis}-${file}`).checked;
     setIntegral(iChecked);
-    document.getElementById(`check-derivate-${yAxis}`).checked = false;
+    document.getElementById(`check-derivate-${yAxis}-${file}`).checked = false;
     setDerivate(false);
   };
   const handleDerivate = () => {
-    const iChecked = document.getElementById(`check-derivate-${yAxis}`).checked;
+    const iChecked = document.getElementById(`check-derivate-${yAxis}-${file}`).checked;
     setDerivate(iChecked);
-    document.getElementById(`check-integral-${yAxis}`).checked = false;
+    document.getElementById(`check-integral-${yAxis}-${file}`).checked = false;
     setIntegral(false);
   };
   const handleRegression = () => {
-    const iChecked = document.getElementById(`check-regression-${yAxis}`)
+    const iChecked = document.getElementById(`check-regression-${yAxis}-${file}`)
       .checked;
     setRegression(iChecked);
   };
-  const handleLinearText = (text)=>{
-    saveLR(yAxis,text)
-  }
+  const handleLinearText = (text) => {
+    saveLR(yAxis, text);
+  };
 
-  
   return (
-    
-      <div className="full-chart-area" style={{ display: "flex" }}>
+    <div className="full-chart-area" style={{ display: "flex" }}>
       <div className="chart-area" ref={chartArea}></div>
       <div className="integration-derivation">
         <div>
@@ -184,10 +185,10 @@ const ChartWrapper = ({
             className="checkbox"
             type="checkbox"
             value="integral"
-            id={`check-integral-${yAxis}`}
+            id={`check-integral-${yAxis}-${file}`}
             onChange={handleIntegral}
           />
-          <label className="checkbox" htmlFor={`check-integral-${yAxis}`}>
+          <label className="checkbox" htmlFor={`check-integral-${yAxis}-${file}`}>
             I
           </label>
         </div>
@@ -196,10 +197,10 @@ const ChartWrapper = ({
             className="checkbox"
             type="checkbox"
             value="derivate"
-            id={`check-derivate-${yAxis}`}
+            id={`check-derivate-${yAxis}-${file}`}
             onChange={handleDerivate}
           />
-          <label className="checkbox" htmlFor={`check-derivate-${yAxis}`}>
+          <label className="checkbox" htmlFor={`check-derivate-${yAxis}-${file}`}>
             D
           </label>
         </div>
@@ -208,18 +209,15 @@ const ChartWrapper = ({
             className="checkbox"
             type="checkbox"
             value="regression"
-            id={`check-regression-${yAxis}`}
+            id={`check-regression-${yAxis}-${file}`}
             onChange={handleRegression}
           />
-          <label className="checkbox" htmlFor={`check-regression-${yAxis}`}>
+          <label className="checkbox" htmlFor={`check-regression-${yAxis}-${file}`}>
             R L
           </label>
         </div>
-        
       </div>
     </div>
-    
-    
   );
 };
 

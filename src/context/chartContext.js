@@ -5,12 +5,11 @@ export const ChartContext = createContext();
 const { Provider } = ChartContext;
 
 export const ChartProvider = (props) => {
-    const [axisY, setAxisY] = useState([]);
-    // const [axisY02, setAxisY02] = useState([]);
+    const [axisY, setAxisY] = useState({});
     const [axisX, setAxisX] = useState({ value: "timer", label: "Timer" });
     const [colors, setColors] = useState("#003cff");
     const [size,setSize] = useState(200)
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
     const [data02, setData02] = useState([]);
 
     const chartValues = useMemo(() => ({

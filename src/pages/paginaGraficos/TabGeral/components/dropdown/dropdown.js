@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Select from "react-select";
 
 import "./dropdown.css";
-
 function Dropdown(props) {
   const [columns, setColumns] = useState([]);
   const data = props.data;
-
+  const [arquivo, setArquivo] = useState(null);
   function handleSelectChange(value) {
     const selectedValues = value;
 
@@ -22,12 +21,28 @@ function Dropdown(props) {
       }
     }
   }
-
+  useEffect(() => {
+    let comp = { tamanho: 0, file: null };
+    for (let a in data) {
+      if (data[a].length > comp.tamanho) {
+        comp.tamanho = data[a].length;
+        comp.file = a;
+      }
+    }
+    setArquivo(comp.file);
+  }, [data]);
   function listOptions() {
-    const options = data.columns.map((column) => {
-      return { value: column, label: column };
-    });
-    setColumns(options);
+    if (props.name === "axis-X") {
+      const options = data[arquivo].columns.map((column) => {
+        return { value: column, label: column };
+      });
+      setColumns(options);
+    } else {
+      const options = data.columns.map((column) => {
+        return { value: column, label: column };
+      });
+      setColumns(options);
+    }
   }
 
   const renderDropDown = () => {
