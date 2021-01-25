@@ -29,6 +29,7 @@ function Data({data,filterN,avarageCheck,medianCheck}) {
               newXdomain={newXdomain}
               ></ChartUpdate>
               <Xlabelwrapper newXdomain={newXdomain}></Xlabelwrapper>
+              <Table></Table>
           </TableProvider>
         </div>)
       }

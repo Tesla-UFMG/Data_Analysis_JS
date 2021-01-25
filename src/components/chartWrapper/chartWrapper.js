@@ -134,7 +134,7 @@ const ChartWrapper = ({
       const aux = realData.filter((d) => {
         return d[0] > newXdomain[0] && d[0] < newXdomain[1];
       });
-      saveRange(yAxis, extent(aux.map((d) => d[1])));
+      saveRange(yAxis, extent(aux.map((d) => d[1])), file);
       reRender();
       chart.update(
         realData,

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+/*import React, { useContext, useEffect, useState } from "react";
 import { ChartContext } from "../../context/chartContext";
 import { tableContext } from "../../context/tableContext";
 import { FileContext } from "../../context/fileContext";
@@ -54,8 +54,8 @@ function Table() {
   );
 }
 
-export default Table;
-/**import React, { useContext, useEffect, useState } from "react";
+export default Table;*/
+import React, { useContext, useEffect, useState } from "react";
 import { ChartContext } from "../../context/chartContext";
 import { tableContext } from "../../context/tableContext";
 import { FileContext } from "../../context/fileContext";
@@ -73,19 +73,27 @@ function Table() {
   useEffect(() => {
     const aux = {};
     selectFile.map((file) => {
-      return (aux[file] = chartValues.axisY[file.label].map((y) => y.column));
+      return (aux[file.label] = chartValues.axisY[file.label]
+        ? chartValues.axisY[file.label].map((y) => y.column)
+        : console.log("ok"));
     });
     setY(aux);
-  }, [selectFile]);
+  }, [selectFile, chartValues.axisY]);
   useEffect(() => {
     const filtered = {};
     selectFile.map((file) => {
-      return (filtered[file.label] = Object.keys(range)
-        .filter((key) => Y[file.label].includes(key))
-        .reduce((obj, key) => {
-          obj[key] = range[key];
-          return obj;
-        }, {}));
+      if (range[file.label]) {
+        return (filtered[file.label] = Object.keys(range[file.label])
+          .filter((key) =>
+            Y[file.label]
+              ? Y[file.label].includes(key)
+              : console.log(Y[file.label])
+          )
+          .reduce((obj, key) => {
+            obj[key] = range[file.label][key];
+            return obj;
+          }, {}));
+      } else return;
     });
     setExtent(filtered);
   }, [force, selectFile]);
@@ -96,7 +104,6 @@ function Table() {
         .filter((key) => Y[file.label].includes(key))
         .reduce((obj, key) => {
           obj[key] = LRtext[key];
-          console.log(obj)
           return obj;
         }, {}));
     });
@@ -105,7 +112,7 @@ function Table() {
 
   return (
     <div id={"table"}>
-      <table className="table">
+      <table className="tables">
         <thead>
           <tr>
             <th>name</th>
@@ -118,7 +125,7 @@ function Table() {
           {selectFile.map((file) => {
             return (
               <TableValues
-              key = {file.label}
+                key={file.label}
                 Y={chartValues.axisY[file.label]}
                 range={extent[file.label]}
                 regression={regression[file.label]}
@@ -132,4 +139,3 @@ function Table() {
 }
 
 export default Table;
- */
