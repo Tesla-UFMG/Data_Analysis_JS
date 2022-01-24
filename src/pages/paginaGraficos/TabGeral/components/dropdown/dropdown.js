@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 
 import "./dropdown.css";
-  
+
 function Dropdown(props) {
   const [columns, setColumns] = useState([]);
   const data = props.data;
@@ -33,32 +33,38 @@ function Dropdown(props) {
   const renderDropDown = () => {
     if (props.name === "axis-X") {
       return (
-        <Select
-          maxMenuHeight={200}
-          name={props.name}
-          id={props.name}
-          defaultValue={props.defaultValue}
-          onFocus={listOptions}
-          onChange={handleSelectChange}
-          options={columns}
-          className="basic-multi-select"
-          classNamePrefix="select"
-        />
+        <div>
+          <label htmlFor={props.name}>{props.label}</label>
+          <Select
+            maxMenuHeight={200}
+            name={props.name}
+            id={props.name}
+            defaultValue={props.defaultValue}
+            onFocus={listOptions}
+            onChange={handleSelectChange}
+            options={columns}
+            className="basic-multi-select"
+            classNamePrefix="select"
+          />
+        </div>
       );
     } else {
       return (
-        <Select
-          isMulti
-          maxMenuHeight={200}
-          name={props.name}
-          id={props.name}
-          defaultValue={props.defaultValue}
-          onFocus={listOptions}
-          onChange={handleSelectChange}
-          options={columns}
-          className="basic-multi-select"
-          classNamePrefix="select"
-        />
+        <div>
+          <label htmlFor={props.name}>{props.label}</label>
+          <Select
+            isMulti
+            maxMenuHeight={200}
+            name={props.name}
+            id={props.name}
+            defaultValue={props.defaultValue}
+            onFocus={listOptions}
+            onChange={handleSelectChange}
+            options={columns}
+            className="basic-multi-select"
+            classNamePrefix="select"
+          />
+        </div>
       );
     }
   };
