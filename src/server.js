@@ -24,7 +24,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 app.get('/files', (req, res) => {
-    fs.readdir("./files", (err, paths) => {
+    fs.readdir("./../public/files", (err, paths) => {
         if (err) {
             console.log(err);
             return;

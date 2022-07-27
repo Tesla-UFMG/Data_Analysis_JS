@@ -53,11 +53,10 @@ function YawWrapper({ dataX, dataY }) {
 
   return (
     <div>
-      <div className="mini-yaw" ref={miniChart}></div>
+      
       <div className="yaw-chart-area" ref={chartArea}></div>
-      <div className="play-pause" ref={playPause}></div>
     </div>
   );
 }
-
+//<div className="mini-yaw" ref={miniChart}></div>
 export default YawWrapper;

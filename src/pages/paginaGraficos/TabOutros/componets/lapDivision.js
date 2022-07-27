@@ -109,7 +109,7 @@ function LapDivision() {
           label="Eixo X"
           name="axis-X"
           selectedAxis={(value) => chartValues.setAxisX(value)}
-          defaultValue={{ value: "timer", label: "Timer" }}
+          defaultValue={{ value: "Timer", label: "Timer" }}
         />
         <Dropdown
           data={chartValues.data}

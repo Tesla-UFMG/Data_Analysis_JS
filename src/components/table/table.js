@@ -11,6 +11,7 @@ function Table() {
     const [regression, setRegression] = useState(LRtext)
     const chartValues = useContext(ChartContext);
     const Y = chartValues.axisY.map(y=>y.column)
+   // console.log(Y)
 
     useEffect(()=>{
         const filtered = Object.keys(range)
@@ -53,3 +54,4 @@ function Table() {
 }
 
 export default Table
+// "chartValues.axisY" não recebe nada, "range" rebe <!DOCTYPE> e "regression" n recebe nada

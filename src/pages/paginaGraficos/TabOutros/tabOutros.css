@@ -69,3 +69,40 @@
   border-radius: 10px;
   padding: 10px;
 }
+
+.title-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.export-button {
+  color: #4ed840;
+  background-color:white;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin: 10px auto;
+
+  padding: 5px;
+
+  width: 200px;
+
+  border: 1px solid #4ed840;
+
+  border-radius: 5px;
+
+  transition: 0.5s;
+}
+
+.export-button:hover {
+  background-color: #3a9e2f;
+  color: white;
+}

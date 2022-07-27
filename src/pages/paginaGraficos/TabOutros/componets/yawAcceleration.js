@@ -1,28 +1,69 @@
 import React, { useContext, useState, useEffect } from "react";
 import { ChartContext } from "../../../../context/chartContext";
-
+import { Parser } from "json2csv";
 import YawWrapper from "../../../../components/chartWrapper/yawWrapper";
 
-export default function YawAcceleration() {
-  const chartValues = useContext(ChartContext);
-  const [dataX, setDataX] = useState([]);
-  const [dataY, setDataY] = useState([]);
 
-  useEffect(() => {
-    const auxX = [],
-      auxY = [];
-    chartValues.data.map((d) => {
-      auxX.push(+d.timer);
-      auxY.push(+d.accelX);
-      return 0;
-    });
 
-    setDataX(auxX);
-    setDataY(auxY);
-  }, [chartValues]);
-  const renderChart = () => {
-    return <YawWrapper dataX={dataX} dataY={dataY}></YawWrapper>;
-  };
+const YawAcceleration = () => {
+    const chartValues = useContext(ChartContext);
+    const [dataX, setDataX] = useState([]);
+    const [dataY, setDataY] = useState([]);
+    const [csvis, setCsv] = useState();
 
-  return <div>{renderChart()}</div>;
+    useEffect(() => {
+        const parser = new Parser();
+
+        const result = chartValues.data.map((value) => {
+            const timer = +value.Timer;
+            const ACCEL_Z = +value.ACCEL_Z
+            
+            return {
+              timer: timer,
+              aceleracaoZ: ACCEL_Z
+            }
+        });
+
+        const csv = parser.parse(result);
+
+        setCsv(csv);
+        setDataX(result.map((value) => value.timer));
+        setDataY(result.map((value) => value.aceleracaoZ));
+    }, [chartValues]);
+
+    function turn2csv() {
+      const filename = "Yaw Acceleration.csv";
+      const blob = new Blob([csvis], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+    
+      a.setAttribute('href', url)
+      a.setAttribute('download', filename);
+      a.click()
+    };
+
+    const renderChart = () => {
+      return (
+        <div>
+          <YawWrapper dataX={dataX} dataY={dataY} />
+
+          <div className='button-container'>
+            <button onClick={turn2csv} className="export-button">
+              Exportar .csv
+            </button>
+          </div>
+        </div>
+      );
+    };
+    
+    return (
+      <div>
+        <div>
+          {renderChart()}
+        </div>
+      </div>
+    )
 }
+
+
+export default YawAcceleration
