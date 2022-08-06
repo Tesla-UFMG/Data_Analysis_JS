@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-const MARGIN = { top: 2, left: 40, right: 80, bottom: 1 };
+const MARGIN = { top: 10, left: 40, right: 80, bottom: 1 };
 
 var windowWidth = window.innerWidth - 170;
 var vw = windowWidth / 100;
@@ -147,8 +147,8 @@ export default class D3Chart {
         .attr("class", `line`)
         .attr("d", lineGenerator(vis.data))
         .attr("fill", "none")
-        .attr("stroke", ()=>colors?`#${colors}`:"#003cff")
-        .attr("stroke-width", "0.5px");
+        .attr("stroke", "#003cff")
+        .attr("stroke-width", "2px");
 
       //EXIT()
       vis.lines.exit().remove();

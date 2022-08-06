@@ -101,6 +101,28 @@
 
   transition: 0.5s;
 }
+.export-button2 {
+  color: #ca1717;
+  background-color:white;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin: 10px auto;
+
+  padding: 5px;
+
+  width: 200px;
+
+  border: 1px solid #ca1717;
+
+  border-radius: 5px;
+
+  transition: 0.5s;
+}
+.export-button2:hover {
+  background-color: #ca1717;
+  color: rgb(0, 0, 0);
+}
 
 .export-button:hover {
   background-color: #3a9e2f;

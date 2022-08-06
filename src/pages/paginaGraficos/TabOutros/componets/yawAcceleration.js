@@ -15,11 +15,11 @@ const YawAcceleration = () => {
         const parser = new Parser();
 
         const result = chartValues.data.map((value) => {
-            const timer = +value.Timer;
+            const TIMER = +value.TIMER;
             const ACCEL_Z = +value.ACCEL_Z
             
             return {
-              timer: timer,
+              TIMER: TIMER,
               aceleracaoZ: ACCEL_Z
             }
         });
@@ -27,7 +27,7 @@ const YawAcceleration = () => {
         const csv = parser.parse(result);
 
         setCsv(csv);
-        setDataX(result.map((value) => value.timer));
+        setDataX(result.map((value) => value.TIMER));
         setDataY(result.map((value) => value.aceleracaoZ));
     }, [chartValues]);
 

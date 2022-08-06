@@ -62,7 +62,7 @@ export default class Overlap {
     const vis = this;
     const max = [];
     const min = [];
-    const Timer = [];
+    const TIMER = [];
     const lapX = {};
     const lapY = {};
     vis.data = {};
@@ -80,13 +80,13 @@ export default class Overlap {
       }
       max.push(d3.max(lapY[lap]));
       min.push(d3.min(lapY[lap]));
-      Timer.push(d3.max(lapX[lap]) - d3.min(lapX[lap]));
+      TIMER.push(d3.max(lapX[lap]) - d3.min(lapX[lap]));
       return 0;
     });
     const X = d3
       .scaleLinear()
       .range([0, width.Graph])
-      .domain([0, d3.max(Timer)]);
+      .domain([0, d3.max(TIMER)]);
     const Y = d3
       .scaleLinear()
       .range([0, height.Graph])

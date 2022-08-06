@@ -15,19 +15,19 @@ const EficienciaInstantanea = () => {
         const parser = new Parser();
 
         const result = chartValues.data.map((value) => {
-            const timer = +value.Timer;
-            const accelX = +value.accelX
+            const TIMER = +value.TIMER;
+            const ACCEL_X = +value.ACCEL_X
             
             return {
-              timer: timer,
-              aceleracao: accelX
+              TIMER: TIMER,
+              aceleracao: ACCEL_X
             }
         });
 
         const csv = parser.parse(result);
 
         setCsv(csv);
-        setDataX(result.map((value) => value.timer));
+        setDataX(result.map((value) => value.TIMER));
         setDataY(result.map((value) => value.aceleracao));
     }, [chartValues]);
 
@@ -45,6 +45,8 @@ const EficienciaInstantanea = () => {
     const renderChart = () => {
       return (
         <div>
+          <br></br>
+          <h2 className='title-container'>Não implementado</h2> 
           <YawWrapper dataX={dataX} dataY={dataY} />
 
           <div className='button-container'>

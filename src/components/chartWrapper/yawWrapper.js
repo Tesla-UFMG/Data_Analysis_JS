@@ -26,7 +26,9 @@ function YawWrapper({ dataX, dataY }) {
           ((dataY[i + 1] + dataY[i]) / 2) * (dataX[i + 1] - dataX[i]);
       }
       setDFFX(dataX);
-      setDFFY(derivation);
+      //setDFFY(derivation);     //antes derivava eu tirei mas pode ser útil
+
+      setDFFY(dataY);
     }
   }, [dataX, dataY]);
   useEffect(() => {
@@ -53,7 +55,6 @@ function YawWrapper({ dataX, dataY }) {
 
   return (
     <div>
-      
       <div className="yaw-chart-area" ref={chartArea}></div>
     </div>
   );

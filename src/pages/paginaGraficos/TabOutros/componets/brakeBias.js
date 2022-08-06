@@ -15,19 +15,19 @@ const BreakBias = () => {
         const parser = new Parser();
 
         const result = chartValues.data.map((value) => {
-            const timer = +value.Timer;
-            const accelX = +value.accelX//muda aqui
+            const TIMER = +value.TIMER;
+            const ACCEL_X = +value.ACCEL_X//muda aqui
             
             return {
-              timer: timer,
-              aceleracao: accelX//muda aqui
+              TIMER: TIMER,
+              aceleracao: ACCEL_X//muda aqui
             }
         });
 
         const csv = parser.parse(result);
 
         setCsv(csv);
-        setDataX(result.map((value) => value.timer));//muda aqui
+        setDataX(result.map((value) => value.TIMER));//muda aqui
         setDataY(result.map((value) => value.aceleracao));//muda aqui
     }, [chartValues]);
 
@@ -45,6 +45,8 @@ const BreakBias = () => {
     const renderChart = () => {
       return (
         <div>
+          <br></br>
+          <h2 className='title-container'>Não implementado</h2> 
           <YawWrapper dataX={dataX} dataY={dataY} />
 
           <div className='button-container'>

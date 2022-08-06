@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { ChartContext } from "../../../../context/chartContext";
 import { Parser } from "json2csv";
 import YawWrapper from "../../../../components/chartWrapper/yawWrapper";
-
+import { jsPDF } from "jspdf";
 
 
 const TorqueTotal = () => {
@@ -16,11 +16,11 @@ const TorqueTotal = () => {
         const parser = new Parser();
 
         const result = chartValues.data.map((value) => {
-            const timer = +value.Timer;
-            const totalTorque = parseFloat(+value.TorqueRM) + parseFloat(+value.TorqueLM)
+            const TIMER = +value.TIMER;
+            const totalTorque = parseFloat(+value.TORQUE_R) + parseFloat(+value.TORQUE_L) //+value.TorqueT//
             
             return {
-              timer: timer,
+              TIMER: TIMER,
               total_torque: totalTorque
             }
         });
@@ -28,7 +28,7 @@ const TorqueTotal = () => {
         const csv = parser.parse(result);
 
         setCsv(csv);
-        setDataX(result.map((value) => value.timer));
+        setDataX(result.map((value) => value.TIMER));
         setDataY(result.map((value) => value.total_torque));
     }, [chartValues]);
 
@@ -42,6 +42,12 @@ const TorqueTotal = () => {
       a.setAttribute('download', filename);
       a.click()
     };
+    function turn2pdf(){ 
+
+      var doc = new jsPDF();
+      doc.text(10, 10, 'Tesla');
+      doc.save('TorqueTotal.pdf');
+    }
 
     const renderChart = () => {
       return (
@@ -51,6 +57,11 @@ const TorqueTotal = () => {
           <div className='button-container'>
             <button onClick={turn2csv} className="export-button">
               Exportar .csv
+            </button>
+          </div>
+          <div className='button-container'>
+            <button onClick={turn2pdf} className="export-button2">
+              PDF
             </button>
           </div>
         </div>

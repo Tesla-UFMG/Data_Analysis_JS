@@ -43,15 +43,15 @@ function TabGeral() {
     //console.log(aux)
     if (aux) {      
       aux.map((d) => {        
-        d["Timer"] = d["Timer"] / 1000;
-        d["accelX"] = d["accelX"] / 1000;
-        d["accelY"] = d["accelY"] / 1000;
-        d["accelZ"] = d["accelZ"] / 1000;
+        d["TIMER"] = d["TIMER"] / 1000;
+        d["ACCEL_X"] = d["ACCEL_X"] / 1000;
+        d["ACCEL_Y"] = d["ACCEL_Y"] / 1000;
+        d["ACCEL_Z"] = d["ACCEL_Z"] / 1000;
         d["Intensidade_Frenagem"] = d["Intensidade_Frenagem"] / 10;
         d["Speed_LR"] = d["Speed_LR"] / 10;
         d["Speed_RR"] = d["Speed_RR"] / 10;
         d["Pedal"] = d["Pedal"] / 10;
-        d["Volante"] = (d["Volante"] - 1030) / 10;
+        d["VOL"] = (d["VOL"] - 1030) / 10;
         return 0;
       });
     }
@@ -78,7 +78,7 @@ function TabGeral() {
           label="Eixo X"
           name="axis-X"
           selectedAxis={(value) => chartValues.setAxisX(value)}
-          defaultValue={{ value: "Timer", label: "Timer" }}
+          defaultValue={{ value: "TIMER", label: "TIMER" }}
         />
         <Dropdown
           data={data}
