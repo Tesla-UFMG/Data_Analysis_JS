@@ -6,7 +6,7 @@ const { Provider } = ChartContext;
 
 export const ChartProvider = (props) => {
     const [axisY, setAxisY] = useState([]);
-    const [axisX, setAxisX] = useState({ value: "timer", label: "Timer" });
+    const [axisX, setAxisX] = useState({ value: "TIMER", label: "TIMER" });
     const [colors, setColors] = useState("#003cff");
     const [size,setSize] = useState(200)
     const [data, setData] = useState([]);
@@ -17,7 +17,7 @@ export const ChartProvider = (props) => {
         axisX, setAxisX,
         colors, setColors,
         size, setSize
-    }), [axisY, axisX, colors, data,size]);
+    }), [axisY, axisX, colors, data, size]);
 
     return(
         <Provider value={chartValues}>
@@ -25,3 +25,4 @@ export const ChartProvider = (props) => {
         </Provider>
     );
 }
+//{console.log(data)}

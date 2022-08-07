@@ -6,11 +6,12 @@ import { tsv } from "d3";
 import { FileContext } from "../../../context/fileContext";
 import { ChartContext } from "../../../context/chartContext";
 
-
+//import express from 'express'
 import Data from "./components/graficos/data"
 import ConfigRow from "./components/configRow/configRow";
 import Dropdown from "./components/dropdown/dropdown";
 import "./tabGeral.css";
+//const app = express();
 
 function TabGeral() {
   const history = useHistory();
@@ -24,31 +25,33 @@ function TabGeral() {
   const [data,setData] = useState(null)
 
   useEffect(() => {
-    const fileName = selectFile.map((file) => {
-      return { file: require(`../../../files/${file.label}`) };
-    });
 
-    if (fileName.length !== 0) {
-      tsv(fileName[0].file)
+      const fileName = selectFile.map((file) => {
+        return (file.label)
+      })
+      if (fileName.length !== 0) {
+      tsv(`../../../files/${fileName}`)
         .then((d) => chartValues.setData(d))
         .catch((err) => console.log(err));
-    } else {
-      history.push("/");
-    }
-  }, []);
+      }
+      else{
+        history.push("/");
+      }},
+      [selectFile]);
   useEffect(() => {
     const aux = chartValues.data
+    //console.log(aux)
     if (aux) {      
       aux.map((d) => {        
-        d["timer"] = d["timer"] / 1000;
-        d["accelX"] = d["accelX"] / 1000;
-        d["accelY"] = d["accelY"] / 1000;
-        d["accelZ"] = d["accelZ"] / 1000;
+        d["TIMER"] = d["TIMER"] / 1000;
+        d["ACCEL_X"] = d["ACCEL_X"] / 1000;
+        d["ACCEL_Y"] = d["ACCEL_Y"] / 1000;
+        d["ACCEL_Z"] = d["ACCEL_Z"] / 1000;
         d["Intensidade_Frenagem"] = d["Intensidade_Frenagem"] / 10;
         d["Speed_LR"] = d["Speed_LR"] / 10;
         d["Speed_RR"] = d["Speed_RR"] / 10;
         d["Pedal"] = d["Pedal"] / 10;
-        d["Volante"] = (d["Volante"] - 1030) / 10;
+        d["VOL"] = (d["VOL"] - 1030) / 10;
         return 0;
       });
     }
@@ -75,14 +78,15 @@ function TabGeral() {
           label="Eixo X"
           name="axis-X"
           selectedAxis={(value) => chartValues.setAxisX(value)}
-          defaultValue={{ value: "timer", label: "Timer" }}
+          defaultValue={{ value: "TIMER", label: "TIMER" }}
         />
         <Dropdown
           data={data}
           label="Eixo Y"
-          name="axis-y"
+          name="axis-Y"
           selectedAxis={(value) => chartValues.setAxisY(value)}
           defaultValue={chartValues.axisY.map((axis) => {
+            //console.log(axis.column)
             return { value: axis.column, label: axis.column };
           })}
         />
@@ -100,3 +104,17 @@ function TabGeral() {
 }
 
 export default TabGeral;
+
+
+
+    //const fileName = selectFile.map((file) => {
+      //console.log(file.label)
+      //return { file: app.use(express.static(`../../../files/${file.label}`)) };
+      //return { file: require(`../../../../public/files/${file.label}`) };
+      //  return { file: require(`../../../files/${file.label}`) }; 
+    //});
+    //if (fileName.length !== 0) {
+      //tsv(app.use(express.static(fileName[0].file)))
+         //} else {
+     // history.push("/");
+   // }
