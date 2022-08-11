@@ -8,20 +8,25 @@ import { ChartContext } from "../../../context/chartContext";
 
 //import express from 'express'
 import Data from "./components/graficos/data"
-import ConfigRow from "./components/configRow/configRow";
+//import ConfigRow from "./components/configRow/configRow";
 import Dropdown from "./components/dropdown/dropdown";
 import "./tabGeral.css";
 //const app = express();
+import h2p from "../TabOutros/componets/html2pdfs";
 
 function TabGeral() {
   const history = useHistory();
 
   const [selectFile] = useContext(FileContext);
   const chartValues = useContext(ChartContext);
+  const [texto, setTexto] = useState();
+  const [nome, setNome] = useState();
+  const [subsistema, setSubsistema] = useState();
+  const [arquivo, setArquivo] = useState();
 
-  const [filterN, setFilterN] = useState(1);
-  const [avarageCheck, setAvarageCheck] = useState(false);
-  const [medianCheck, setMedianCheck] = useState(false);
+  //const [filterN, setFilterN] = useState(1);
+  //const [avarageCheck, setAvarageCheck] = useState(false);
+  //const [medianCheck, setMedianCheck] = useState(false);
   const [data,setData] = useState(null)
 
   useEffect(() => {
@@ -39,6 +44,7 @@ function TabGeral() {
       }},
       [selectFile]);
   useEffect(() => {
+   
     const aux = chartValues.data
     //console.log(aux)
     if (aux) {      
@@ -59,11 +65,32 @@ function TabGeral() {
   }, [chartValues.data]);
   const renderChart = ()=>{
     if(chartValues.axisY[0]&&data){
+      console.log(chartValues.axisY[0])
       return(
-      <Data data = {data}
-      filterN={filterN}
-          avarageCheck={avarageCheck}
-          medianCheck={medianCheck}></Data>)
+        <div>
+          <br></br>
+          <div className="textbox-container">
+            <input style={{marginLeft:"10px"}} onChange={(e) => {setNome(e.target.value)}} placeholder=' Nome:' maxLength={63} />  
+            <input style={{marginLeft:"10px"}} onChange={(e) => {setSubsistema(e.target.value)}} placeholder=' Subsistema:' maxLength={127} />    
+          </div> 
+          <div id='printThis'>
+          <Data data = {data}
+      //filterN={filterN}
+        //  avarageCheck={avarageCheck}
+          //medianCheck={medianCheck}
+          ></Data>
+          </div>
+          <div className='button-container'>
+            <button onClick={(e)=>h2p(Object.values(chartValues.axisY[0]),texto,nome,subsistema)} className="export-button2">
+              PDF
+            </button>
+          </div>
+          <div className="textbox-container">
+            <textarea className='textbox-container' onChange={(e) => {setTexto(e.target.value)}} placeholder=' Descrição para o Relatório' rows="4" cols="50" maxLength={1023} />
+             
+          </div>
+        </div>
+      )
     }
     else return
   }
@@ -86,18 +113,14 @@ function TabGeral() {
           name="axis-Y"
           selectedAxis={(value) => chartValues.setAxisY(value)}
           defaultValue={chartValues.axisY.map((axis) => {
-            //console.log(axis.column)
-            return { value: axis.column, label: axis.column };
+            return { value: axis.column, label: axis.column};
+            
           })}
         />
       </form>
 
       
-      <ConfigRow
-        filterN={(number) => setFilterN(number)}
-        avarage={(value) => setAvarageCheck(value)}
-        median={(value) => setMedianCheck(value)}
-      />
+      
       {renderChart()}
     </div>
   );
@@ -118,3 +141,8 @@ export default TabGeral;
          //} else {
      // history.push("/");
    // }
+  // <ConfigRow
+    //    filterN={(number) => setFilterN(number)}
+    //    avarage={(value) => setAvarageCheck(value)}
+    //    median={(value) => setMedianCheck(value)}
+    //  />

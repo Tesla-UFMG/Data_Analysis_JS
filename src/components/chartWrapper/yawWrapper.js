@@ -4,6 +4,7 @@ import Yaw from "../chart/yaw";
 import YawMini from "../chart/yawMini";
 import PlayPause from "../chart/playPause";
 
+
 function YawWrapper({ dataX, dataY }) {
   const [dffx, setDFFX] = useState(null);
   const [dffy, setDFFY] = useState(null);
@@ -52,7 +53,7 @@ function YawWrapper({ dataX, dataY }) {
       pp.update(dataX)
     }
   }, [pp,dataX]);
-
+  
   return (
     <div>
       <div className="yaw-chart-area" ref={chartArea}></div>

@@ -1,9 +1,8 @@
-
 import React, { useContext, useState, useEffect } from "react";
 import { ChartContext } from "../../../../context/chartContext";
 import { Parser } from "json2csv";
 import YawWrapper from "../../../../components/chartWrapper/yawWrapper";
-import { jsPDF } from "jspdf";
+import h2p from "./html2pdfs";
 
 
 const TorqueTotal = () => {
@@ -11,6 +10,9 @@ const TorqueTotal = () => {
     const [dataX, setDataX] = useState([]);
     const [dataY, setDataY] = useState([]);
     const [csvis, setCsv] = useState();
+    const [texto, setTexto] = useState();
+    const [nome, setNome] = useState();
+    const [subsistema, setSubsistema] = useState();
 
     useEffect(() => {
         const parser = new Parser();
@@ -42,27 +44,38 @@ const TorqueTotal = () => {
       a.setAttribute('download', filename);
       a.click()
     };
-    function turn2pdf(){ 
-
-      var doc = new jsPDF();
-      doc.text(10, 10, 'Tesla');
-      doc.save('TorqueTotal.pdf');
-    }
+      
+      //tela_impressao = window.open('about:blank');
+      //console.log(grafico)
+      //tela_impressao.document.write(grafico);
+      //tela_impressao.window.print('../../../../../public/images/grafic');
+      //tela_impressao.window.close();
+    
 
     const renderChart = () => {
       return (
         <div>
+          <br></br>
+          <div className="textbox-container">
+            <input style={{marginLeft:"10px"}} onChange={(e) => {setNome(e.target.value)}} placeholder=' Nome:' maxLength={63} />  
+            <input style={{marginLeft:"10px"}} onChange={(e) => {setSubsistema(e.target.value)}} placeholder=' Subsistema:' maxLength={127} />    
+          </div> 
+          <div id='printThis'>
           <YawWrapper dataX={dataX} dataY={dataY} />
-
+          </div>
           <div className='button-container'>
             <button onClick={turn2csv} className="export-button">
               Exportar .csv
             </button>
           </div>
           <div className='button-container'>
-            <button onClick={turn2pdf} className="export-button2">
+            <button onClick={(e)=>h2p('Torque Total',texto,nome,subsistema)} className="export-button2">
               PDF
             </button>
+          </div>
+          <div className="textbox-container">
+            <textarea className='textbox-container' onChange={(e) => {setTexto(e.target.value)}} placeholder=' Descrição para o Relatório' rows="4" cols="50" maxLength={1023} />
+             
           </div>
         </div>
       );

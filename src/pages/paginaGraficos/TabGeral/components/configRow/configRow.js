@@ -161,4 +161,4 @@ function ConfigRow({ filterN, median, avarage }) {
   );
 }
 
-export default ConfigRow;
+//export default ConfigRow;
