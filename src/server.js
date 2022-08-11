@@ -10,7 +10,7 @@ app.use(express.json());
 
 const storage = multer.diskStorage({
     destination: function(req, file, callback) {
-        callback(null, "files/");
+        callback(null, "./../public/files/");
     },
     filename: function(req, file, callback) {
         callback(null, file.originalname);
@@ -24,7 +24,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 app.get('/files', (req, res) => {
-    fs.readdir("./files", (err, paths) => {
+    fs.readdir("./../public/files", (err, paths) => {
         if (err) {
             console.log(err);
             return;

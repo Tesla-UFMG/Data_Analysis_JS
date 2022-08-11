@@ -1,0 +1,36 @@
+#tab-config {
+    padding: 15px;
+    height: 100%;
+}
+
+#tab-config .tab-title {
+    color: black;
+    font-size: 20px;
+    font-family: Roboto;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#tab-config .tipo-graficos {
+    margin-left: 20px;
+}
+
+#tab-config .tipo-graficos label {
+    margin-left: 10px;
+}
+
+#tab-config .tamanho-graficos {
+    margin-left: 20px;
+}
+
+#tab-config .tamanho-graficos label {
+    margin-left: 10px;
+}
+
+#tab-config .color-graficos {
+    margin-left: 20px;
+}
+
+#tab-config .color-graficos label {
+    margin-right: 10px;
+}
